@@ -102,8 +102,8 @@ bot.dialog('/', [
                         userId = result[0].userId;
                         address = result[0].AddressData;                     
  
-                        session.send("ערב טוב לאמא שלי...");
-                        builder.Prompts.number(session, "זאת ההתחברות הראשונה שלך... מזל טוב וזה");
+                        session.send( "היוש, זאת ההתחברות הראשונה שלך... מזל טוב וזה");
+                        builder.Prompts.choice(session, "אז איך אני יכול להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);
                                 
                     } else {
                         
