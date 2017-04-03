@@ -1,0 +1,21 @@
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/index.js",
+            "cwd": "${workspaceRoot}",
+            "env": {
+                "NODE_ENV": "development",
+                "AzureWebJobsStorage": "{azure storage connection string}",
+                "MICROSOFT_APP_ID": "715e44bf-8101-4954-b448-87332b0df435", 
+                "MICROSOFT_APP_PASSWORD": "UnXezaJ6hePmp7V5kmYQrNH",
+                "AZURE_STORAGE_ACCOUNT": "gtechdevdata",
+                "AZURE_STORAGE_ACCESS_KEY": "K5kCnohMHM68oqvnzYzOoUbh5QbS//h8fB6PDThq1LNade05O5uRF6sfhRZgQO8ouMebRKoasmQ9rr+JDUOmSQ=="
+            }
+        }
+    ]
+}
