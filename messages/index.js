@@ -177,7 +177,7 @@ bot.dialog('/', [
 
             session.sendTyping();
 
-            session.send("סבבה... אני על זה. רצית ש..", session.userData.userChoice); 
+            session.send("סבבה... אני על זה. רצית ש.." + session.userData.userChoice); 
 
             if (session.userData.userChoice == 'תזכיר לי משהו') {
 
@@ -188,6 +188,10 @@ bot.dialog('/', [
                 session.sendTyping();
 
                 session.send("יאללה יאללה... אני לא עובד אצלך! כלומר בגרסה הבאה.. :)");
+
+                session.endDialog();
+
+                session.beginDialog("/");
 
             }
 
@@ -224,12 +228,21 @@ bot.dialog('/', [
     function (session, results) {
 
         session.userData.ReminderTime = results.response;
+        
+        session.sendTyping();
+
+        builder.Prompts.text(session, "אז מה בעצם להזכיר לך? אנא לציין כותרת קצרה וקולעת כי אני לא מוצלח בלזכור בכללי...סבבה? יופי"); 
+    },    
+    function (session, results) {
+
+        session.userData.ReminderText = results.response;
 
         var SessionAddresRecord = {
               'CreatedTime': LogTimeStame,
               'ReminderTime': session.userData.ReminderTime,
               'ReminderType': session.userData.ReminderType,
               'EntityType': session.userData.userChoice,
+              'ReminderText' : session.userData.ReminderText,
               'userId': userId
         }; 
 
