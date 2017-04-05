@@ -27,8 +27,8 @@ var minutes = now.minutes()+1;
 var schedule = require('node-schedule');
 var Dailyrule = new schedule.RecurrenceRule();
 
-Dailyrule.hour = 16;
-Dailyrule.minute = 00;
+Dailyrule.hour = hour;
+Dailyrule.minute = minutes;
  
 var z = schedule.scheduleJob(Dailyrule, function(){
 
