@@ -101,15 +101,34 @@ bot.dialog('/', [
 
                             addressId = result[0].addressId;
                             userId = result[0].userId;
-                            address = result[0].AddressData;  
+                            address = result[0].AddressData;
+
+                            if (session.message.address.id != addressId) {
+
+                                addressId = session.message.address.id;
+                                userId = session.message.user.id;
+                                session.userData.userId = session.message.user.id;
+                                address = session.message.address;
+
+                                colUserData.update (
+                                { "userId": userId },
+                                { $set: { 'address': address, 'addressId': addressId, 'ChangedTime':LogTimeStame } }
+                                ) 
+
+                                
+                            }  
 
                             if (session.userData.PostEntityInsert == 'true') {
+
+                                session.sendTyping();
 
                                 session.send("יופי טופי... אני עובד אצלך. משהו נוסף?");
 
                                 builder.Prompts.choice(session, "איך אני יכול (שוב...) להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);                                               
 
                             } else {
+
+                                session.sendTyping();
 
                                 session.send("היוש שוב..");
 
@@ -119,25 +138,27 @@ bot.dialog('/', [
                                 
                     } else {
 
+                            session.sendTyping();
 
-                        session.send( "היוש, זאת ההתחברות הראשונה שלך... מזל טוב וזה");
-                        builder.Prompts.choice(session, "אז איך אני יכול להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);
+                            session.send( "היוש, זאת ההתחברות הראשונה שלך... מזל טוב וזה");
+                            builder.Prompts.choice(session, "אז איך אני יכול להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);
                                                
    
-                        addressId = session.message.address.id;
-                        userId = session.message.user.id;
-                        session.userData.userId = session.message.user.id;
-                        address = session.message.address;
+                            addressId = session.message.address.id;
+                            userId = session.message.user.id;
+                            session.userData.userId = session.message.user.id;
+                            address = session.message.address;
                                 
-                        var SessionAddresRecord = {
+                            var SessionAddresRecord = {
                                 'CreatedTime': LogTimeStame,
                                 'AddressData': address,
                                 'addressId': addressId,
                                 'userId': userId
-                         }; 
+                            }; 
 
-                        colUserData.insert(SessionAddresRecord, function(err, result){}); 
-                    }
+                            colUserData.insert(SessionAddresRecord, function(err, result){}); 
+
+                            }
 
 
 
@@ -153,6 +174,9 @@ bot.dialog('/', [
 
         if (results.response) {
             session.userData.userChoice = results.response.entity;
+
+            session.sendTyping();
+
             session.send("סבבה... אני על זה. רצית ש..", session.userData.userChoice); 
 
             if (session.userData.userChoice == 'תזכיר לי משהו') {
@@ -160,6 +184,8 @@ bot.dialog('/', [
                 builder.Prompts.choice(session, "משהו קבוע או סתם קפריזה חולפת?", ["קבוע","קפריזה"]);
 
             } else {
+
+                session.sendTyping();
 
                 session.send("יאללה יאללה... אני לא עובד אצלך! כלומר בגרסה הבאה.. :)");
 
@@ -172,7 +198,10 @@ bot.dialog('/', [
         
     },
     function (session, results) {
+
         session.userData.ReminderType = results.response;
+
+        session.sendTyping();
 
         if (session.userData.ReminderType == 'קבוע') {
 
@@ -185,7 +214,11 @@ bot.dialog('/', [
   
     },
     function (session, results) {
+
         session.userData.ReminderDay = results.response;
+        
+        session.sendTyping();
+
         builder.Prompts.number(session, "שעה מועדפת? אם מדובר בשמונה בערב אז כאדי לציין '20'"); 
     },
     function (session, results) {
@@ -202,11 +235,17 @@ bot.dialog('/', [
         colEntities.insert(SessionAddresRecord, function(err, result){}); 
 
         session.userData.PostEntityInsert = 'true';
+
+        session.sendTyping();
+
+        session.send("סבבה, רשמתי לעצמי להזכיר לך.");
+
+        session.endDialog();
     }
 ]);
 
 
-/*
+
 
 bot.dialog('/sendDailyReminder', [
     function (session) {
@@ -249,7 +288,7 @@ bot.dialog('/sendDailyReminder', [
 
 
 
-
+/*
 
 bot.dialog('/sendMomDailyReminder', [
     function (session) {
