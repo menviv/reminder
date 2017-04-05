@@ -222,13 +222,14 @@ bot.dialog('/', [
         builder.Prompts.number(session, "שעה מועדפת? אם מדובר בשמונה בערב אז כאדי לציין '20'"); 
     },
     function (session, results) {
+
         session.userData.ReminderTime = results.response;
 
         var SessionAddresRecord = {
               'CreatedTime': LogTimeStame,
-              'ReminderTime': ReminderTime,
-              'ReminderType': ReminderType,
-              'EntityType': userChoice,
+              'ReminderTime': session.userData.ReminderTime,
+              'ReminderType': session.userData.ReminderType,
+              'EntityType': session.userData.userChoice,
               'userId': userId
         }; 
 
