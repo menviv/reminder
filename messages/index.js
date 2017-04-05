@@ -20,7 +20,7 @@ var LogTimeStame = moment().format(DateFormat);
 
 var now = moment();
 var hour = now.hour();
-var minutes = now.minutes()+1;
+var minutes = now.minutes()+5;
 
 
 // Cron Scheduler  //////////////////////////////////////////////////////////////////////
