@@ -87,7 +87,7 @@ var bot = new builder.UniversalBot(connector);
 bot.dialog('/', [
     function (session) {
                  
-            var cursor = colUserData.find({ "addressId": session.message.address.id });
+            var cursor = colUserData.find({ "userId": session.userData.userId });
             
             var result = [];
             cursor.each(function(err, doc) {
@@ -98,40 +98,39 @@ bot.dialog('/', [
 
 
                     if (result.length>0) {
-                        
-                        addressId = result[0].addressId;
-                        userId = result[0].userId;
-                        address = result[0].AddressData;                     
- 
-                        session.send( "היוש, זאת ההתחברות הראשונה שלך... מזל טוב וזה");
-                        builder.Prompts.choice(session, "אז איך אני יכול להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);
-                                
-                    } else {
 
-                        if (session.userData.PostEntityInsert == 'true') {
+                            addressId = result[0].addressId;
+                            userId = result[0].userId;
+                            address = result[0].AddressData;  
+
+                            if (session.userData.PostEntityInsert == 'true') {
 
                                 session.send("יופי טופי... אני עובד אצלך. משהו נוסף?");
 
                                 builder.Prompts.choice(session, "איך אני יכול (שוב...) להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);                                               
 
-
-                        } else {
-   
-                                addressId = session.message.address.id;
-                                userId = session.message.user.id;
-                                address = session.message.address;
+                            }                        
                                 
-                                var SessionAddresRecord = {
-                                    'CreatedTime': LogTimeStame,
-                                    'AddressData': address,
-                                    'addressId': addressId,
-                                    'userId': userId
-                                }; 
+                    } else {
 
-                        }                                
-                    
+
+                        session.send( "היוש, זאת ההתחברות הראשונה שלך... מזל טוב וזה");
+                        builder.Prompts.choice(session, "אז איך אני יכול להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);
+                                               
+   
+                        addressId = session.message.address.id;
+                        userId = session.message.user.id;
+                        session.userData.userId = session.message.user.id;
+                        address = session.message.address;
+                                
+                        var SessionAddresRecord = {
+                                'CreatedTime': LogTimeStame,
+                                'AddressData': address,
+                                'addressId': addressId,
+                                'userId': userId
+                         }; 
+
                         colUserData.insert(SessionAddresRecord, function(err, result){}); 
-                        session.send("היוש וזה..");
                     }
 
 
