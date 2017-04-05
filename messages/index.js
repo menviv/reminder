@@ -87,7 +87,7 @@ var bot = new builder.UniversalBot(connector);
 bot.dialog('/', [
     function (session) {
                  
-            var cursor = colUserData.find({ "userId": session.userData.userId });
+            var cursor = colUserData.find({ "userId": session.message.user.id });
             
             var result = [];
             cursor.each(function(err, doc) {
