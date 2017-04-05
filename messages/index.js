@@ -253,7 +253,7 @@ bot.dialog('logoutDialog', function (session, args) {
 
     session.userData.userId = 'null';
 
-    ession.userData.PostEntityInsert = 'null'
+    ession.userData.PostEntityInsert = 'null';
 
     userId = '';
 
