@@ -246,6 +246,41 @@ bot.dialog('/', [
 
 
 
+bot.dialog('logoutDialog', function (session, args) {
+
+    session.endDialog("Goodbye.... I'm ending our conversation now by logging out...");
+
+    if (args.topic == 'logout') {
+
+        session.endConversation();
+
+        session.userData.userId = '';
+
+        userId = 'False';
+
+        session.beginDialog("/");
+
+    }
+
+}).triggerAction({ 
+    onFindAction: function (context, callback) {
+        // Recognize users utterance
+        switch (context.message.text.toLowerCase()) {
+            case '/logout':
+                // You can trigger the action with callback(null, 1.0) but you're also
+                // allowed to return additional properties which will be passed along to
+                // the triggered dialog.
+                callback(null, 1.0, { topic: 'logout' });
+                break;
+            default:
+                callback(null, 0.0);
+                break;
+        }
+    } 
+});
+
+
+
 
 bot.dialog('/sendDailyReminder', [
     function (session) {
