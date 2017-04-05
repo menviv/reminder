@@ -32,7 +32,7 @@ Dailyrule.minute = minutes;
  
 var z = schedule.scheduleJob(Dailyrule, function(){
 
-  bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
+ // bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
 
 });
 
