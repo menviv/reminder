@@ -255,9 +255,11 @@ bot.dialog('logoutDialog', function (session, args) {
 
         session.endConversation();
 
-        session.userData.userId = '';
+        session.userData.userId = 'null';
 
-        userId = 'False';
+        ession.userData.PostEntityInsert == 'null'
+
+        userId = '';
 
         session.beginDialog("/");
 
