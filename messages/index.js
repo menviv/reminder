@@ -242,6 +242,8 @@ bot.dialog('/', [
         session.send("סבבה, רשמתי לעצמי להזכיר לך.");
 
         session.endDialog();
+
+        session.beginDialog("/");
     }
 ]);
 
