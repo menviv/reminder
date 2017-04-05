@@ -49,6 +49,7 @@ var ObjectID = require('mongodb').ObjectID;
 var dbm;
 var colUserData;
 var colStoreData;
+var colEntities;
 
 // Initialize connection once
  
@@ -58,6 +59,7 @@ mongo.MongoClient.connect(connString, function(err, database) {
   dbm = database;
   colStoreData = dbm.collection('StoreData');
   colUserData = dbm.collection('UserData'); 
+  colEntities = dbm.collection('Entities'); 
   
 });
 
@@ -106,22 +108,31 @@ bot.dialog('/', [
                         builder.Prompts.choice(session, "אז איך אני יכול להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);
                                 
                     } else {
-                        
-                        addressId = session.message.address.id;
-                        userId = session.message.user.id;
-                        address = session.message.address;
-                        
-                         var SessionAddresRecord = {
-                            'CreatedTime': LogTimeStame,
-                            'AddressData': address,
-                            'addressId': addressId,
-                            'userId': userId
-                        };         
+
+                        if (session.userData.PostEntityInsert == 'true') {
+
+                                session.send("יופי טופי... אני עובד אצלך. משהו נוסף?");
+
+                                builder.Prompts.choice(session, "איך אני יכול (שוב...) להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);                                               
+
+
+                        } else {
+   
+                                addressId = session.message.address.id;
+                                userId = session.message.user.id;
+                                address = session.message.address;
+                                
+                                var SessionAddresRecord = {
+                                    'CreatedTime': LogTimeStame,
+                                    'AddressData': address,
+                                    'addressId': addressId,
+                                    'userId': userId
+                                }; 
+
+                        }                                
                     
                         colUserData.insert(SessionAddresRecord, function(err, result){}); 
-                        session.send("ערב טוב לאמא שלי...");
-                        session.send("זאת ההתחברות הראשונה שלך... מזל טוב וזה");                       
-                                               
+                        session.send("היוש וזה..");
                     }
 
 
@@ -133,6 +144,60 @@ bot.dialog('/', [
             });         
             
 
+    },
+    function (session, results) {
+
+        if (results.response) {
+            session.userData.userChoice = esults.response.entity;
+            session.send("סבבה... אני על זה. רצית ש..", session.userData.userChoice); 
+
+            if (session.userData.userChoice == 'תזכיר לי משהו') {
+
+                builder.Prompts.choice(session, "משהו קבוע או סתם קפריזה חולפת?", ["קבוע","קפריזה"]);
+
+            } else {
+
+                session.send("יאללה יאללה... אני לא עובד אצלך! כלומר בגרסה הבאה.. :)");
+
+            }
+
+            
+        } else {
+            session.send("לא בטוח שהבנתי מה רצית...");
+        }
+        
+    },
+    function (session, results) {
+        session.userData.ReminderType = results.response;
+
+        if (session.userData.ReminderType == 'קבוע') {
+
+            builder.Prompts.number(session, "באיזה יום קבוע בשבוע? למשל אם יום רביעי אז נא לציין '4'"); 
+
+        } else {
+
+            builder.Prompts.number(session, "באיזה יום בחודש? למשל: ביום ה- 20 לחודש..."); 
+        }
+  
+    },
+    function (session, results) {
+        session.userData.ReminderDay = results.response;
+        builder.Prompts.number(session, "שעה מועדפת? אם מדובר בשמונה בערב אז כאדי לציין '20'"); 
+    },
+    function (session, results) {
+        session.userData.ReminderTime = results.response;
+
+        var SessionAddresRecord = {
+              'CreatedTime': LogTimeStame,
+              'ReminderTime': ReminderTime,
+              'ReminderType': ReminderType,
+              'EntityType': userChoice,
+              'userId': userId
+        }; 
+
+        colEntities.insert(SessionAddresRecord, function(err, result){}); 
+
+        session.userData.PostEntityInsert = 'true';
     }
 ]);
 
