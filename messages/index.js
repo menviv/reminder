@@ -251,21 +251,16 @@ bot.dialog('/', [
 
 bot.dialog('logoutDialog', function (session, args) {
 
+    session.userData.userId = 'null';
+
+    ession.userData.PostEntityInsert == 'null'
+
+    userId = '';
+
     session.endDialog("Goodbye.... I'm ending our conversation now by logging out...");
 
-    if (args.topic == 'logout') {
+    session.beginDialog("/");
 
-        session.endConversation();
-
-        session.userData.userId = 'null';
-
-        ession.userData.PostEntityInsert == 'null'
-
-        userId = '';
-
-        session.beginDialog("/");
-
-    }
 
 }).triggerAction({ 
     onFindAction: function (context, callback) {
