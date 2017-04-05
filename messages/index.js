@@ -264,11 +264,11 @@ bot.dialog('/', [
 
 bot.dialog('logoutDialog', function (session, args) {
 
-    session.userData.userId = '1';
+    session.userData.userId = session.message.user.id;
 
     session.userData.PostEntityInsert = 'false';
 
-    userId = '';
+    userId = session.message.user.id;
 
     session.endDialog("Goodbye.... I'm ending our conversation now by logging out...");
 
