@@ -255,7 +255,7 @@ bot.dialog('logoutDialog', function (session, args) {
 
     ession.userData.PostEntityInsert = 'false';
 
-    userId = '';
+    //userId = '';
 
     session.endDialog("Goodbye.... I'm ending our conversation now by logging out...");
 
