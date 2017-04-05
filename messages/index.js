@@ -34,7 +34,6 @@ var z = schedule.scheduleJob(Dailyrule, function(){
 
   bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
 
-
 });
 
 
@@ -202,10 +201,50 @@ bot.dialog('/', [
 ]);
 
 
-
-
-
 bot.dialog('/sendDailyReminder', [
+    function (session) {
+       
+            
+            var cursor = colEntities.find({ "userId": userId });
+            
+            var result = [];
+            cursor.each(function(err, doc) {
+                if(err)
+                    throw err;
+                if (doc === null) {
+                    // doc is null when the last document has been processed
+
+
+                    if (result.length>0) {
+                        
+                        session.send("תזכורת וזה.." + result[0].ReminderType);
+ 
+                                
+                    } else {
+                        
+                        session.send("לא זוכר כלום טוב? יופי");
+                     
+                                               
+                    }
+
+
+                    return;
+                }
+                // do something with each doc, like push Email into a results array
+                result.push(doc);
+            });         
+            
+
+    }
+]);
+
+
+
+
+
+
+
+bot.dialog('/sendMomDailyReminder', [
     function (session) {
        
             
