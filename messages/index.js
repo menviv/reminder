@@ -239,6 +239,7 @@ bot.dialog('/', [
 
         var SessionAddresRecord = {
               'CreatedTime': LogTimeStame,
+              'ReminderDay': session.userData.ReminderDay,
               'ReminderTime': session.userData.ReminderTime,
               'ReminderType': session.userData.ReminderType,
               'EntityType': session.userData.userChoice,
