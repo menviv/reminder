@@ -146,7 +146,7 @@ bot.dialog('/', [
     function (session, results) {
 
         if (results.response) {
-            session.userData.userChoice = esults.response.entity;
+            session.userData.userChoice = results.response.entity;
             session.send("סבבה... אני על זה. רצית ש..", session.userData.userChoice); 
 
             if (session.userData.userChoice == 'תזכיר לי משהו') {
