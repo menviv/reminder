@@ -200,6 +200,8 @@ bot.dialog('/', [
 ]);
 
 
+/*
+
 bot.dialog('/sendDailyReminder', [
     function (session) {
        
@@ -333,7 +335,7 @@ bot.dialog('/sendMomDailyReminder', [
 ]);
 
 
-
+*/
 
 
 if (useEmulator) {
