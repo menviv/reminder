@@ -275,11 +275,21 @@ bot.dialog('/', [
 
                             if (session.userData.PostEntityInsert == 'true') {
 
-                                session.sendTyping();
+                                if (userId == '344409174' || userId == '302621400') {
 
-                                session.send("יופי טופי... אני עובד אצלך. משהו נוסף?");
+                                    session.sendTyping();
 
-                                builder.Prompts.choice(session, "איך אני יכול (שוב...) להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);                                               
+                                    session.send("ברוך שובך..");
+
+                                } else {
+
+                                    session.sendTyping();
+
+                                    session.send("יופי טופי... אני עובד אצלך. משהו נוסף?");
+
+                                    builder.Prompts.choice(session, "איך אני יכול (שוב...) להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);                                               
+
+                                }
 
                             } else {
 
