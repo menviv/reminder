@@ -73,6 +73,8 @@ schedule.scheduleJob(minuterule, function(){
                         session.send("ReminderTime: ", result[0].ReminderTime); 
 
                         session.send("ReminderDay: ", result[0].ReminderDay); 
+
+                        bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
  
                     } 
 
