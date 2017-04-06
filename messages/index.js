@@ -152,7 +152,7 @@ schedule.scheduleJob(minuterule, function(){
 
                                     colEntities.update (
                                     { "_id": o_ID },
-                                    { $set: { 'EntityStatus': 'created', 'ChangedTime':LogTimeStame } }
+                                    { $set: { 'EntityStatus': 'created', 'ChangedTime': moment().format(DateFormat) } }
                                     ) 
             
                                 } 
@@ -409,13 +409,14 @@ bot.dialog('logoutDialog', function (session, args) {
 
 
 bot.dialog('/sendDailyReminder', [
+
     function (session) {
        
         session.send("userId" + userId);
 
         session.send("addressId" + addressId);
 
-        session.send("ReminderText" + ReminderText);
+       // session.send("ReminderText" + ReminderText);
 
     }
 ]);
