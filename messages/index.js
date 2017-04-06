@@ -283,7 +283,7 @@ bot.dialog('/', [
 
                             } else {
 
-                                if (userId == '344409174') {
+                                if (userId == '344409174' || userId == '302621400') {
 
                                     session.sendTyping();
 
