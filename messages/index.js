@@ -65,16 +65,12 @@ schedule.scheduleJob(minuterule, function(){
 
 
                     if (result.length>0) {
-                        
-                        GetCurrentUserAddress(result[0].userId);
-                         
-                      //  session.send("userId: ", result[0].userId); 
 
-                      //  session.send("ReminderTime: ", result[0].ReminderTime); 
+                        for (i=0; i<result.length; i++) {
 
-                      //  session.send("ReminderDay: ", result[0].ReminderDay); 
+                            GetCurrentUserAddress(result[0].userId);
 
-                        bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
+                        }     
  
                     } 
 
@@ -106,6 +102,8 @@ schedule.scheduleJob(minuterule, function(){
                                     addressId = result[0].addressId;
 
                                     address = result[0].AddressData; 
+
+                                    bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
             
                                 } 
 
@@ -400,7 +398,7 @@ bot.dialog('/sendDailyReminder', [
 
                     if (result.length>0) {
 
-                        for (i=0; i<result.length; i++) {
+                        session.send("תזכורת וזה.." + result[0].ReminderText);
 
                             session.send("תזכורת וזה.." + result[0].ReminderText);
 
