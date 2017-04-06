@@ -474,6 +474,10 @@ bot.dialog('/sendReminder', [
 
         session.send("ReminderText" + ReminderText);
 
+        session.endDialog();
+
+        session.beginDialog("/");        
+
     }
 ]);
 
