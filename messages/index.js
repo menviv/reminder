@@ -354,6 +354,7 @@ bot.dialog('/', [
 
         if (results.response) {
             session.userData.userChoice = results.response.entity;
+            session.send(esults.response.entity);
 
             session.sendTyping();
 
@@ -362,6 +363,8 @@ bot.dialog('/', [
                 builder.Prompts.choice(session, "משהו קבוע או סתם קפריזה חולפת?", ["קבוע","קפריזה"]);
 
             } else if (ession.userData.userChoice == 'בוטביט') {
+
+                session.endDialog();
 
                 session.beginDialog("/BotBit");
 
