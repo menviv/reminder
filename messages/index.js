@@ -468,9 +468,9 @@ bot.dialog('/sendReminder', [
 
                             colLog.insert(LogRecord, function(err, result){});         
        
-        session.send("userId" + userId);
+        //session.send("userId" + userId);
 
-        session.send("addressId" + addressId);
+        //session.send("addressId" + addressId);
 
         session.send("ReminderText" + ReminderText);
 
