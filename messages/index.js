@@ -69,6 +69,7 @@ function CreateJobToQueue(hour, addressId, userId, ReminderText) {
 
                              var LogRecord = {
                                 'CreatedTime': LogTimeStame,
+                                'Origin': 'CreateJobToQueue',
                                 'hour': hour,
                                 'addressId': addressId,
                                 'userId': userId
@@ -430,6 +431,16 @@ bot.dialog('logoutDialog', function (session, args) {
 bot.dialog('/sendDailyReminder', [
 
     function (session) {
+
+                             var LogRecord = {
+                                'Origin': 'sendDailyReminder',
+                                'CreatedTime': LogTimeStame,
+                                'hour': hour,
+                                'addressId': addressId,
+                                'userId': userId
+                            }; 
+
+                            colLog.insert(LogRecord, function(err, result){});         
        
         session.send("userId" + userId);
 
