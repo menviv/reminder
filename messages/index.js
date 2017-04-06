@@ -105,7 +105,7 @@ schedule.scheduleJob(minuterule, function(){
 
                                     //bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
 
-                                    bot.beginDialog(address, '/sendDailyReminder');
+                                    bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId });
             
                                 } 
 
@@ -404,7 +404,7 @@ bot.dialog('/sendDailyReminder', [
 
                             session.send("תזכורת וזה.." + result[0].ReminderText);
 
-                            session.send("userId" + userId);
+                            session.send("userId" + result[0].userId);
 
                             session.send("addressId" + addressId);
 
