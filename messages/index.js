@@ -369,11 +369,9 @@ bot.dialog('/', [
 
                 session.sendTyping();
 
-                session.send("יאללה יאללה... אני לא עובד אצלך! כלומר בגרסה הבאה.. :)");
+                session.send("אני מבטיח שאלמד לעשות זאת עד הגרסה הבאה");
 
                 session.endDialog();
-
-                session.beginDialog("/");
 
             }
 
