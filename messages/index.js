@@ -60,7 +60,7 @@ var request = require('request');
 // Cron Scheduler  //////////////////////////////////////////////////////////////////////
 var schedule = require('node-schedule');
 
-function CreateJobToQueue(hour, addressId, userId, EntityId) {
+function CreateJobToQueue(hour, addressId, userId, ReminderText) {
 
     var Dailyrule = new schedule.RecurrenceRule();
     var now = moment();
@@ -72,7 +72,7 @@ function CreateJobToQueue(hour, addressId, userId, EntityId) {
 
     var z = schedule.scheduleJob(Dailyrule, function(){
 
-    bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId, EntityId: EntityId });
+        bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId, ReminderText: ReminderText });
 
     });
 
@@ -109,7 +109,9 @@ schedule.scheduleJob(minuterule, function(){
 
                             var EntityId = result[0]._id;
 
-                            GetCurrentUserAddress(userId, EntityId);
+                            var ReminderText = result[0].ReminderText;
+
+                            GetCurrentUserAddress(userId, EntityId, ReminderText);
 
                         }     
  
@@ -144,7 +146,7 @@ schedule.scheduleJob(minuterule, function(){
 
                                     address = result[0].AddressData; 
 
-                                    CreateJobToQueue(hour, addressId, userId, EntityId);
+                                    CreateJobToQueue(hour, addressId, userId, ReminderText);
 
                                     var o_ID = new mongo.ObjectID(EntityId); 
 
@@ -409,42 +411,11 @@ bot.dialog('logoutDialog', function (session, args) {
 bot.dialog('/sendDailyReminder', [
     function (session) {
        
-            var o_ID = new mongo.ObjectID(EntityId); 
-            var cursor = colEntities.find({'_id': o_ID ,'userId' : userId});
-            
-            var result = [];
-            cursor.each(function(err, doc) {
-                if(err)
-                    throw err;
-                if (doc === null) {
-                    // doc is null when the last document has been processed
+        session.send("userId" + userId);
 
+        session.send("addressId" + addressId);
 
-                    if (result.length>0) {
-
-                            session.send("תזכורת וזה.." + result[0].ReminderText);
-
-                            session.send("userId" + userId);
-
-                            session.send("addressId" + addressId);
-
-                            session.send("o_ID" + o_ID);
-
-                                
-                    } else {
-                        
-                        session.send("לא זוכר כלום טוב? יופי");
-                     
-                                               
-                    }
-
-
-                    return;
-                }
-                // do something with each doc, like push Email into a results array
-                result.push(doc);
-            });         
-            
+        session.send("ReminderText" + ReminderText);
 
     }
 ]);
