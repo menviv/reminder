@@ -103,8 +103,10 @@ schedule.scheduleJob(minuterule, function(){
 
     function GetNewReminderRequests() {
 
+                            var changeTime = moment().format(DateFormat);
+
                              var LogRecord = {
-                                'CreatedTime': LogTimeStame,
+                                'CreatedTime': changeTime,
                                 'Origin': 'GetNewReminderRequests',
                                 'hour': hour,
                                 'addressId': addressId,
@@ -137,10 +139,13 @@ schedule.scheduleJob(minuterule, function(){
 
                         }     
  
-                    } 
+                    } else {
+
+                        session.beginDialog("/");
+                    }
 
 
-                    return;
+                   // return;
                 }
                 // do something with each doc, like push Email into a results array
                 result.push(doc);
@@ -152,8 +157,10 @@ schedule.scheduleJob(minuterule, function(){
 
     function GetCurrentUserAddress(userId, EntityId) {
 
+                           var changeTime = moment().format(DateFormat); 
+
                            var LogRecord = {
-                                'CreatedTime': LogTimeStame,
+                                'CreatedTime': changeTime,
                                 'Origin': 'GetCurrentUserAddress',
                                 'hour': hour,
                                 'addressId': addressId,
@@ -452,9 +459,11 @@ bot.dialog('/sendDailyReminder', [
 
     function (session) {
 
+                            var changeTime = moment().format(DateFormat); 
+
                              var LogRecord = {
                                 'Origin': 'sendDailyReminder',
-                                'CreatedTime': LogTimeStame,
+                                'CreatedTime': changeTime,
                                 'hour': hour,
                                 'addressId': addressId,
                                 'userId': userId
