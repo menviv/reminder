@@ -357,8 +357,6 @@ bot.dialog('/', [
 
             session.sendTyping();
 
-            session.send("סבבה... אני על זה. רצית ש.." + session.userData.userChoice); 
-
             if (session.userData.userChoice == 'תזכיר לי משהו' ||  session.userData.userChoice == 'עוזר אישי') {
 
                 builder.Prompts.choice(session, "משהו קבוע או סתם קפריזה חולפת?", ["קבוע","קפריזה"]);
