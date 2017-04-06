@@ -457,68 +457,64 @@ bot.dialog('/BotBit', [
 
         session.send("שלום לקו יקר שלי, שמי בוטביט ואני אנסה לסייע לך להשלים את תהליך אימות הנתונים לקראת הנפקת פוליסת ביטוח המקיף לרכב שלך.");
 
-        session.send("שנתחיל?");
-
         builder.Prompts.choice(session, "שנתחיל?", "כן|לא");
-
-        var cursor = collTickets.find({"Status" : "new"});
-        var result = [];
-        cursor.each(function(err, doc) {
-            if(err)
-                throw err;
-            if (doc === null) {
-
-               var nresultLen = result.length;
-
-                        for (var i=0; i<nresultLen; i++ ) {
-
-                            var thumbImg = "http://www.reedyreels.com/wp-content/uploads/2015/08/ticket-icon-RR-300x252.png";
-
-                            //var thumbImg;
-
-                            if (result[i].Files != undefined) {
-
-                                    thumbImg = result[i].Files[0].thumbnailUrl;
-
-                            }
-
-    
-                            var msg = new builder.Message(session)
-                                .textFormat(builder.TextFormat.xml)
-                                .attachments([
-                                    new builder.ThumbnailCard(session)
-                                        .title('Ticket Card No: ' + result[i].ObjectNo)
-                                        .subtitle(result[i].ObjectTxt)
-                                        .text("Status: " + result[i].Status)
-                                        .images([
-                                            builder.CardImage.create(session, thumbImg)
-                                        ])
-                                        //.tap(builder.CardAction.openUrl(session, "https://en.wikipedia.org/wiki/Space_Needle"))
-                                        .buttons([
-                                            builder.CardAction.dialogAction(session, "close", result[i].ObjectNo, "Close"),
-                                            builder.CardAction.dialogAction(session, "reopen", result[i].ObjectNo, "Re-Open"),
-                                            builder.CardAction.dialogAction(session, "review", result[i].ObjectNo, "Review"),
-                                            builder.CardAction.dialogAction(session, "comment", result[i].ObjectNo, "Comment")
-                                        ])
-                                ]);
-                            session.send(msg);
-
-                        }
-
-
-
-                return;
-            }
-            // do something with each doc, like push Email into a results array
-            result.push(doc);
-        });      
 
     },
     function (session, results) {
 
-            session.beginDialog("/location", { location: "path" });
+            session.userData.StartImut = results.response.entity;
+
+            builder.Prompts.text(session, "מה סוג הרכב שלך?"); 
             
-    }
+    },
+    function (session, results) {
+
+            session.userData.CarType = results.response.entity;
+
+            builder.Prompts.number(session, "אחלה רכב! ושנת הייצור?"); 
+            
+    },
+    function (session, results) {
+
+            session.userData.Year = results.response.entity;
+
+            builder.Prompts.choice(session, "תאונות כלשהן?", "כן|לא");
+            
+    },
+    function (session, results) {
+
+            session.userData.Accidents = results.response.entity;
+
+            builder.Prompts.choice(session, " האם קיימת מערכת מיגון?", "כן|לא");
+            
+    },
+    function (session, results) {
+
+            session.userData.Migun = results.response.entity;
+
+            builder.Prompts.attachment(session, "עכשיו...אשמח אם תוכל לצלם את הרכב ולשלוח לי את התמונה שלו");
+            
+    },
+    function (session, results) {
+
+            session.userData.CarImage = results.response[0].thumbnailUrl;
+
+            session.sendTyping();
+
+            session.send("תודה רבה לך על המידע שמסרת!");
+
+            builder.Prompts.choice(session, " האם אתם מאשרים שכל הנתונים שסיפקתם הם אמיתיים ומשקפים את המצב הנוכחי של הרכב?", "כן|לא");
+            
+    },
+    function (session, results) {
+
+            session.userData.ApproveData = results.response.entity;
+
+            session.send("שוב תודה. עכשיו אני אבצע את הפנייה בשמך אל הגורמים המתאימים בחברת הביטוח על מנת לאשר את הפוליסה. בהצלחה לשנינו :)");
+
+            session.endDialog();
+            
+    },
 ]);
 
 
