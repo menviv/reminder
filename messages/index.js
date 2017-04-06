@@ -362,11 +362,11 @@ bot.dialog('/', [
 
                 builder.Prompts.choice(session, "משהו קבוע או סתם קפריזה חולפת?", ["קבוע","קפריזה"]);
 
-            } else if (ession.userData.userChoice == 'בוטביט') {
+            } else if (session.userData.userChoice == 'בוטביט') {
 
                 session.send(results.response.entity);
 
-                session.endDialog();
+                //session.endDialog();
 
                 session.beginDialog("/BotBit");
 
