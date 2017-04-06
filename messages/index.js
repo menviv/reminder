@@ -171,7 +171,7 @@ schedule.scheduleJob(minuterule, function(){
 
 
 
-   // GetNewReminderRequests();
+    GetNewReminderRequests();
 
 
 });
