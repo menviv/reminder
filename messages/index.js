@@ -68,11 +68,11 @@ schedule.scheduleJob(minuterule, function(){
                         
                         GetCurrentUserAddress(result[0].userId);
                          
-                        session.send("userId: ", result[0].userId); 
+                      //  session.send("userId: ", result[0].userId); 
 
-                        session.send("ReminderTime: ", result[0].ReminderTime); 
+                      //  session.send("ReminderTime: ", result[0].ReminderTime); 
 
-                        session.send("ReminderDay: ", result[0].ReminderDay); 
+                      //  session.send("ReminderDay: ", result[0].ReminderDay); 
 
                         bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
  
@@ -105,7 +105,7 @@ schedule.scheduleJob(minuterule, function(){
                                     
                                     addressId = result[0].addressId;
 
-                                    session.send("addressId: ", addressId);
+                                   // session.send("addressId: ", addressId);
             
                                 } 
 
