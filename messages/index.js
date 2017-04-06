@@ -281,6 +281,8 @@ bot.dialog('/', [
 
                                     session.send("ברוך שובך..");
 
+                                    builder.Prompts.choice(session, "אז מה תרצו להדגים היום?", "עוזר אישי|בוטביט|אחר");
+
                                 } else {
 
                                     session.sendTyping();
@@ -299,8 +301,7 @@ bot.dialog('/', [
 
                                     session.send("ברוך שובך..");
 
-                                    builder.Prompts.choice(session, "אז איך אני יכול להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);
-
+                                    builder.Prompts.choice(session, "אז מה תרצו להדגים היום?", "עוזר אישי|בוטביט|אחר");
 
                                 } else {
 
@@ -358,9 +359,13 @@ bot.dialog('/', [
 
             session.send("סבבה... אני על זה. רצית ש.." + session.userData.userChoice); 
 
-            if (session.userData.userChoice == 'תזכיר לי משהו') {
+            if (session.userData.userChoice == 'תזכיר לי משהו' ||  session.userData.userChoice == 'עוזר אישי') {
 
                 builder.Prompts.choice(session, "משהו קבוע או סתם קפריזה חולפת?", ["קבוע","קפריזה"]);
+
+            } else if (ession.userData.userChoice == 'בוטביט') {
+
+                session.beginDialog("/BotBit");
 
             } else {
 
@@ -440,6 +445,85 @@ bot.dialog('/', [
             session.beginDialog("/");
     }
 ]);
+
+
+
+
+
+bot.dialog('/BotBit', [
+    function (session) {
+
+        session.sendTyping();
+
+        session.send("שלום לקו יקר שלי, שמי בוטביט ואני אנסה לסייע לך להשלים את תהליך אימות הנתונים לקראת הנפקת פוליסת ביטוח המקיף לרכב שלך.");
+
+        session.send("שנתחיל?");
+
+        builder.Prompts.choice(session, "שנתחיל?", "כן|לא");
+
+        var cursor = collTickets.find({"Status" : "new"});
+        var result = [];
+        cursor.each(function(err, doc) {
+            if(err)
+                throw err;
+            if (doc === null) {
+
+               var nresultLen = result.length;
+
+                        for (var i=0; i<nresultLen; i++ ) {
+
+                            var thumbImg = "http://www.reedyreels.com/wp-content/uploads/2015/08/ticket-icon-RR-300x252.png";
+
+                            //var thumbImg;
+
+                            if (result[i].Files != undefined) {
+
+                                    thumbImg = result[i].Files[0].thumbnailUrl;
+
+                            }
+
+    
+                            var msg = new builder.Message(session)
+                                .textFormat(builder.TextFormat.xml)
+                                .attachments([
+                                    new builder.ThumbnailCard(session)
+                                        .title('Ticket Card No: ' + result[i].ObjectNo)
+                                        .subtitle(result[i].ObjectTxt)
+                                        .text("Status: " + result[i].Status)
+                                        .images([
+                                            builder.CardImage.create(session, thumbImg)
+                                        ])
+                                        //.tap(builder.CardAction.openUrl(session, "https://en.wikipedia.org/wiki/Space_Needle"))
+                                        .buttons([
+                                            builder.CardAction.dialogAction(session, "close", result[i].ObjectNo, "Close"),
+                                            builder.CardAction.dialogAction(session, "reopen", result[i].ObjectNo, "Re-Open"),
+                                            builder.CardAction.dialogAction(session, "review", result[i].ObjectNo, "Review"),
+                                            builder.CardAction.dialogAction(session, "comment", result[i].ObjectNo, "Comment")
+                                        ])
+                                ]);
+                            session.send(msg);
+
+                        }
+
+
+
+                return;
+            }
+            // do something with each doc, like push Email into a results array
+            result.push(doc);
+        });      
+
+    },
+    function (session, results) {
+
+            session.beginDialog("/location", { location: "path" });
+            
+    }
+]);
+
+
+
+
 
 
 
