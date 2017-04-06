@@ -105,7 +105,7 @@ schedule.scheduleJob(minuterule, function(){
                                     
                                     addressId = result[0].addressId;
 
-                                   // session.send("addressId: ", addressId);
+                                    address = result[0].AddressData; 
             
                                 } 
 
