@@ -283,11 +283,25 @@ bot.dialog('/', [
 
                             } else {
 
-                                session.sendTyping();
+                                if (userId == '344409174') {
 
-                                session.send("היוש שוב..");
+                                    session.sendTyping();
 
-                                builder.Prompts.choice(session, "אז איך אני יכול להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);
+                                    session.send("ברוך שובך..");
+
+                                    builder.Prompts.choice(session, "אז איך אני יכול להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);
+
+
+                                } else {
+
+                                    session.sendTyping();
+
+                                    session.send("היוש שוב..");
+
+                                    builder.Prompts.choice(session, "אז איך אני יכול להחליף את מנשה ולעזור לך?", ["תזכיר לי משהו","חפש לי משהו","תגיד למנש שירים טלפון"]);
+
+                                }
+
 
                             }                       
                                 
