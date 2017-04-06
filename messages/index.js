@@ -38,6 +38,7 @@ var dbm;
 var colUserData;
 var colStoreData;
 var colEntities;
+var colLog;
 
 // Initialize connection once
  
@@ -47,7 +48,8 @@ mongo.MongoClient.connect(connString, function(err, database) {
   dbm = database;
   colStoreData = dbm.collection('StoreData');
   colUserData = dbm.collection('UserData'); 
-  colEntities = dbm.collection('Entities'); 
+  colEntities = dbm.collection('Entities');
+  colLog =  dbm.collection('Log'); 
   
 });
 
@@ -62,6 +64,17 @@ var request = require('request');
 var schedule = require('node-schedule');
 
 function CreateJobToQueue(hour, addressId, userId, ReminderText) {
+
+    
+
+                             var LogRecord = {
+                                'CreatedTime': LogTimeStame,
+                                'hour': hour,
+                                'addressId': addressId,
+                                'userId': userId
+                            }; 
+
+                            colLog.insert(LogRecord, function(err, result){}); 
 
     var Dailyrule = new schedule.RecurrenceRule();
     var now = moment();
