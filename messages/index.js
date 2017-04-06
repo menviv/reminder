@@ -65,7 +65,7 @@ function CreateJobToQueue(hour, addressId, userId, ReminderText) {
 
     var Dailyrule = new schedule.RecurrenceRule();
     var now = moment();
-    var minutes = now.minutes()+2;
+    var minutes = now.minutes()+1;
 
     Dailyrule.hour = hour;
     Dailyrule.minute = minutes;
@@ -419,7 +419,7 @@ bot.dialog('/sendDailyReminder', [
 
         session.send("addressId" + addressId);
 
-       // session.send("ReminderText" + ReminderText);
+        session.send("ReminderText" + ReminderText);
 
     }
 ]);
