@@ -411,9 +411,9 @@ bot.dialog('/', [
 
         session.send("סבבה, רשמתי לעצמי להזכיר לך.");
 
-        session.endDialog();
+            session.endDialog();
 
-        session.beginDialog("/");
+            session.beginDialog("/");
     }
 ]);
 
@@ -498,11 +498,9 @@ bot.dialog('/sendDailyReminder', [
 
                             colLog.insert(LogRecord, function(err, result){});         
        
-        session.send("userId" + userId);
+        session.endDialog();
 
-        session.send("addressId" + addressId);
-
-        session.send("ReminderText" + ReminderText);
+        session.beginDialog("/");
 
     }
 ]);
