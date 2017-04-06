@@ -663,7 +663,7 @@ bot.dialog('momDialog', function (session, args) {
 bot.dialog('/sendMomDailyReminder', [
     function (session) {
         
-            GetUserAddress("302621400");
+            GetUserAddress("358985845");
             
             var cursor = colUserData.find({ "addressId": addressId });
             
