@@ -388,7 +388,7 @@ bot.dialog('/sendDailyReminder', [
     function (session) {
        
             
-            var cursor = colEntities.find({});
+            var cursor = colEntities.find({'userId' : userId});
             
             var result = [];
             cursor.each(function(err, doc) {
@@ -404,7 +404,7 @@ bot.dialog('/sendDailyReminder', [
 
                             session.send("תזכורת וזה.." + result[0].ReminderText);
 
-                            session.send("userId" + result[0].userId);
+                            session.send("userId" + userId);
 
                             session.send("addressId" + addressId);
 
