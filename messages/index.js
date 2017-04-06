@@ -68,7 +68,11 @@ schedule.scheduleJob(minuterule, function(){
 
                         for (i=0; i<result.length; i++) {
 
-                            GetCurrentUserAddress(result[0].userId);
+                            userId = result[0].userId;
+
+                            var EntityId = result[0]._id;
+
+                            GetCurrentUserAddress(userId, EntityId);
 
                         }     
  
@@ -83,7 +87,7 @@ schedule.scheduleJob(minuterule, function(){
 
 
 
-            function GetCurrentUserAddress(userId) {
+            function GetCurrentUserAddress(userId, EntityId) {
 
 
                         var cursor = colUserData.find({ 'userId': userId });
@@ -105,7 +109,7 @@ schedule.scheduleJob(minuterule, function(){
 
                                     //bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
 
-                                    bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
+                                    bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId, EntityId: EntityId });
             
                                 } 
 
@@ -387,8 +391,8 @@ bot.dialog('logoutDialog', function (session, args) {
 bot.dialog('/sendDailyReminder', [
     function (session) {
        
-            
-            var cursor = colEntities.find({'userId' : userId});
+            var o_ID = new mongo.ObjectID(EntityId); 
+            var cursor = colEntities.find({'_id': o_ID ,'userId' : userId});
             
             var result = [];
             cursor.each(function(err, doc) {
@@ -400,15 +404,13 @@ bot.dialog('/sendDailyReminder', [
 
                     if (result.length>0) {
 
-                        for (i=0; i<result.length; i++) {
-
                             session.send("תזכורת וזה.." + result[0].ReminderText);
 
                             session.send("userId" + userId);
 
                             session.send("addressId" + addressId);
 
-                        }
+                            session.send("o_ID" + o_ID);
 
                                 
                     } else {
