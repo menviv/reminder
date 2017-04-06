@@ -12,6 +12,8 @@ https://docs.botframework.com/en-us/node/builder/chat/dialogs/#waterfall
 var address;
 var addressId;
 var userId;
+var hour;
+var minutes = 05;
 
 ///////// Time Module ///////////////////////
 var moment = require('moment');
@@ -19,8 +21,8 @@ var DateFormat = "DD-MM-YYYY HH:mm:ss";
 var LogTimeStame = moment().format(DateFormat); 
 
 var now = moment();
-var hour = now.hour();
-var minutes = now.minutes()+5;
+//var hour = now.hour();
+//var minutes = now.minutes()+5;
 
 
 // Cron Scheduler  //////////////////////////////////////////////////////////////////////
@@ -237,17 +239,17 @@ bot.dialog('/', [
 
         session.userData.ReminderText = results.response;
 
-        var SessionAddresRecord = {
+        var EntityRecord = {
               'CreatedTime': LogTimeStame,
               'ReminderDay': session.userData.ReminderDay,
               'ReminderTime': session.userData.ReminderTime,
               'ReminderType': session.userData.ReminderType,
               'EntityType': session.userData.userChoice,
               'ReminderText' : session.userData.ReminderText,
-              'userId': userId
+              'userId': session.userData.userId
         }; 
 
-        colEntities.insert(SessionAddresRecord, function(err, result){}); 
+        colEntities.insert(EntityRecord, function(err, result){}); 
 
         session.userData.PostEntityInsert = 'true';
 
