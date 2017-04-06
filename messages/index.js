@@ -456,12 +456,14 @@ bot.dialog('/BotBit', [
 
         session.sendTyping();
 
-        session.send("שלום לקו יקר שלי, שמי בוטביט ואני אנסה לסייע לך להשלים את תהליך אימות הנתונים לקראת הנפקת פוליסת ביטוח המקיף לרכב שלך.");
+        session.send("שלום לקוח יקר שלנו, שמי בוטביט ואני אנסה לסייע לך להשלים את תהליך אימות הנתונים לקראת הנפקת פוליסת ביטוח המקיף לרכב שלך.");
 
         builder.Prompts.choice(session, "שנתחיל?", "כן|לא");
 
     },
     function (session, results) {
+
+            session.sendTyping();
 
             session.userData.StartImut = results.response.entity;
 
@@ -470,12 +472,16 @@ bot.dialog('/BotBit', [
     },
     function (session, results) {
 
+            session.sendTyping();
+
             session.userData.CarType = results.response.entity;
 
             builder.Prompts.number(session, "אחלה רכב! ושנת הייצור?"); 
             
     },
     function (session, results) {
+
+            session.sendTyping();
 
             session.userData.Year = results.response.entity;
 
@@ -484,6 +490,8 @@ bot.dialog('/BotBit', [
     },
     function (session, results) {
 
+            session.sendTyping();
+
             session.userData.Accidents = results.response.entity;
 
             builder.Prompts.choice(session, " האם קיימת מערכת מיגון?", "כן|לא");
@@ -491,9 +499,11 @@ bot.dialog('/BotBit', [
     },
     function (session, results) {
 
+            session.sendTyping();
+
             session.userData.Migun = results.response.entity;
 
-            builder.Prompts.attachment(session, "עכשיו...אשמח אם תוכל לצלם את הרכב ולשלוח לי את התמונה שלו");
+            builder.Prompts.attachment(session, ".עכשיו...אשמח אם תוכל לצלם את הרכב ולשלוח לי את התמונה שלו.. יאללה מחכה לזה..");
             
     },
     function (session, results) {
