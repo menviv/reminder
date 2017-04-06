@@ -86,100 +86,6 @@ function CreateJobToQueue(hour, addressId, userId, ReminderText) {
 
 
 
-var minuterule = new schedule.RecurrenceRule();
-minuterule.minute = new schedule.Range(0, 59, 1)
-
-schedule.scheduleJob(minuterule, function(){
-
-
-            var cursor = colEntities.find({ 'EntityStatus': 'new' });
-            
-            var result = [];
-            cursor.each(function(err, doc) {
-                if(err)
-                    throw err;
-                if (doc === null) {
-                    // doc is null when the last document has been processed
-
-
-                    if (result.length>0) {
-
-                        for (i=0; i<result.length; i++) {
-
-                            userId = result[0].userId;
-
-                            var EntityId = result[0]._id;
-
-                            ReminderText = result[0].ReminderText;
-
-                            GetCurrentUserAddress(userId, EntityId, ReminderText);
-
-                        }     
- 
-                    } 
-
-
-                    return;
-                }
-                // do something with each doc, like push Email into a results array
-                result.push(doc);
-            }); 
-
-
-
-            function GetCurrentUserAddress(userId, EntityId) {
-
-
-                        var cursor = colUserData.find({ 'userId': userId });
-                        
-                        var result = [];
-                        cursor.each(function(err, doc) {
-                            if(err)
-                                throw err;
-                            if (doc === null) {
-                                // doc is null when the last document has been processed
-
-
-                                if (result.length>0) {
-                                    
-                                    
-                                    addressId = result[0].addressId;
-
-                                    address = result[0].AddressData; 
-
-                                    CreateJobToQueue(hour, addressId, userId, ReminderText);
-
-                                    var o_ID = new mongo.ObjectID(EntityId); 
-
-                                    var changeTime = moment().format(DateFormat);
-
-                                    colEntities.update (
-                                    { "_id": o_ID },
-                                    { $set: { 'EntityStatus': 'created', 'ChangedTime': changeTime } }
-                                    ) 
-            
-                                } 
-
-
-                                return;
-                            }
-                            // do something with each doc, like push Email into a results array
-                            result.push(doc);
-                        }); 
-
-
-            } 
-
-
-});
-
-
-
-
-
-
-
-
 "use strict";
 var builder = require("botbuilder");
 var botbuilder_azure = require("botbuilder-azure");
@@ -423,6 +329,103 @@ bot.dialog('/sendDailyReminder', [
 
     }
 ]);
+
+
+
+
+
+
+
+var minuterule = new schedule.RecurrenceRule();
+minuterule.minute = new schedule.Range(0, 59, 1)
+
+schedule.scheduleJob(minuterule, function(){
+
+
+            var cursor = colEntities.find({ 'EntityStatus': 'new' });
+            
+            var result = [];
+            cursor.each(function(err, doc) {
+                if(err)
+                    throw err;
+                if (doc === null) {
+                    // doc is null when the last document has been processed
+
+
+                    if (result.length>0) {
+
+                        for (i=0; i<result.length; i++) {
+
+                            userId = result[0].userId;
+
+                            var EntityId = result[0]._id;
+
+                            ReminderText = result[0].ReminderText;
+
+                            GetCurrentUserAddress(userId, EntityId, ReminderText);
+
+                        }     
+ 
+                    } 
+
+
+                    return;
+                }
+                // do something with each doc, like push Email into a results array
+                result.push(doc);
+            }); 
+
+
+
+            function GetCurrentUserAddress(userId, EntityId) {
+
+
+                        var cursor = colUserData.find({ 'userId': userId });
+                        
+                        var result = [];
+                        cursor.each(function(err, doc) {
+                            if(err)
+                                throw err;
+                            if (doc === null) {
+                                // doc is null when the last document has been processed
+
+
+                                if (result.length>0) {
+                                    
+                                    
+                                    addressId = result[0].addressId;
+
+                                    address = result[0].AddressData; 
+
+                                    CreateJobToQueue(hour, addressId, userId, ReminderText);
+
+                                    var o_ID = new mongo.ObjectID(EntityId); 
+
+                                    var changeTime = moment().format(DateFormat);
+
+                                    colEntities.update (
+                                    { "_id": o_ID },
+                                    { $set: { 'EntityStatus': 'created', 'ChangedTime': changeTime } }
+                                    ) 
+            
+                                } 
+
+
+                                return;
+                            }
+                            // do something with each doc, like push Email into a results array
+                            result.push(doc);
+                        }); 
+
+
+            } 
+
+
+});
+
+
+
+
 
 
 
