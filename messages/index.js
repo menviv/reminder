@@ -103,6 +103,16 @@ schedule.scheduleJob(minuterule, function(){
 
     function GetNewReminderRequests() {
 
+                             var LogRecord = {
+                                'CreatedTime': LogTimeStame,
+                                'Origin': 'GetNewReminderRequests',
+                                'hour': hour,
+                                'addressId': addressId,
+                                'userId': userId
+                            }; 
+
+                            colLog.insert(LogRecord, function(err, result){});         
+
             var cursor = colEntities.find({ 'EntityStatus': 'new' });
             
             var result = [];
@@ -141,6 +151,16 @@ schedule.scheduleJob(minuterule, function(){
 
 
     function GetCurrentUserAddress(userId, EntityId) {
+
+                           var LogRecord = {
+                                'CreatedTime': LogTimeStame,
+                                'Origin': 'GetCurrentUserAddress',
+                                'hour': hour,
+                                'addressId': addressId,
+                                'userId': userId
+                            }; 
+
+                            colLog.insert(LogRecord, function(err, result){}); 
 
 
                         var cursor = colUserData.find({ 'userId': userId });
