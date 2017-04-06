@@ -529,7 +529,7 @@ bot.dialog('restartDialog', function (session, args) {
 
     session.endDialog("אז מתחילים מחדש..");
 
-    //session.beginDialog("/");
+    session.beginDialog("/");
 
 
 }).triggerAction({ 
