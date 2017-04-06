@@ -103,7 +103,9 @@ schedule.scheduleJob(minuterule, function(){
 
                                     address = result[0].AddressData; 
 
-                                    bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
+                                    //bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
+
+                                    bot.beginDialog(address, '/sendDailyReminder');
             
                                 } 
 
@@ -386,7 +388,7 @@ bot.dialog('/sendDailyReminder', [
     function (session) {
        
             
-            var cursor = colEntities.find({ "userId": userId });
+            var cursor = colEntities.find({});
             
             var result = [];
             cursor.each(function(err, doc) {
