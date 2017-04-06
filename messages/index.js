@@ -87,7 +87,7 @@ function CreateJobToQueue(hour, addressId, userId, ReminderText) {
 
     var z = schedule.scheduleJob(Dailyrule, function(){
 
-        bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId, ReminderText: ReminderText });
+        bot.beginDialog(address, '/sendReminder', { addressId: addressId, userId: userId, ReminderText: ReminderText });
 
     });
 
@@ -209,7 +209,7 @@ schedule.scheduleJob(minuterule, function(){
 
 
 
-   // GetNewReminderRequests();
+    GetNewReminderRequests();
 
 
 });
@@ -448,6 +448,36 @@ bot.dialog('logoutDialog', function (session, args) {
         }
     } 
 });
+
+
+
+
+bot.dialog('/sendReminder', [
+
+    function (session) {
+
+                            var changeTime = moment().format(DateFormat); 
+
+                             var LogRecord = {
+                                'Origin': 'sendReminder',
+                                'CreatedTime': changeTime,
+                                'hour': hour,
+                                'addressId': addressId,
+                                'userId': userId
+                            }; 
+
+                            colLog.insert(LogRecord, function(err, result){});         
+       
+        session.send("userId" + userId);
+
+        session.send("addressId" + addressId);
+
+        session.send("ReminderText" + ReminderText);
+
+    }
+]);
+
+
 
 
 
