@@ -30,7 +30,7 @@ var schedule = require('node-schedule');
 //var Dailyrule = new schedule.RecurrenceRule();
 
 var minuterule = new schedule.RecurrenceRule();
-minuterule.minute = new schedule.Range(0, 59, 5)
+minuterule.minute = new schedule.Range(0, 59, 2)
 
 //Dailyrule.hour = hour;
 //Dailyrule.minute = minutes;
