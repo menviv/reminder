@@ -630,13 +630,42 @@ bot.dialog('/sendDailyReminder', [
 
 
 
-/*
+
+
+
+bot.dialog('momDialog', function (session, args) {
+
+    session.endDialog("momDialog");
+
+    session.beginDialog("/sendMomDailyReminder");
+
+
+}).triggerAction({ 
+    onFindAction: function (context, callback) {
+        // Recognize users utterance
+        switch (context.message.text.toLowerCase()) {
+            case '/mom':
+                callback(null, 1.0, { topic: 'mom' });
+                break;
+            default:
+                callback(null, 0.0);
+                break;
+        }
+    } 
+});
+
+
+
+
+
+
 
 bot.dialog('/sendMomDailyReminder', [
     function (session) {
-       
+        
+            GetUserAddress("302621400");
             
-            var cursor = colUserData.find({ "addressId": session.message.address.id });
+            var cursor = colUserData.find({ "addressId": addressId });
             
             var result = [];
             cursor.each(function(err, doc) {
@@ -716,13 +745,66 @@ bot.dialog('/sendMomDailyReminder', [
                 'NumPlants': session.userData.NumPlants
             };
             
-            colStoreData.insert(DailyDateRecord, function(err, result){});                      
+            colStoreData.insert(DailyDateRecord, function(err, result){});    
+
+            session.endDialog();                  
                     
     }
 ]);
 
 
-*/
+
+
+
+///////////// Global Functions 358985845 /////////////////////////////////////////
+
+
+    function GetUserAddress(userId) {
+
+                           var changeTime = moment().format(DateFormat); 
+
+                           var LogRecord = {
+                                'CreatedTime': changeTime,
+                                'Origin': 'GetUserAddress',
+                                'userId': userId
+                            }; 
+
+                            colLog.insert(LogRecord, function(err, result){}); 
+
+
+                        var cursor = colUserData.find({ 'userId': userId });
+                        
+                        var result = [];
+                        cursor.each(function(err, doc) {
+                            if(err)
+                                throw err;
+                            if (doc === null) {
+                                // doc is null when the last document has been processed
+
+
+                                if (result.length>0) {
+                                    
+                                    
+                                    addressId = result[0].addressId;
+
+                                    address = result[0].AddressData;  
+            
+                                } 
+
+
+                                return;
+                            }
+                            // do something with each doc, like push Email into a results array
+                            result.push(doc);
+                        }); 
+
+
+    } 
+
+
+
+
+
 
 
 if (useEmulator) {
