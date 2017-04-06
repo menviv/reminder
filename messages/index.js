@@ -139,9 +139,6 @@ schedule.scheduleJob(minuterule, function(){
 
                         }     
  
-                    } else {
-
-                        session.beginDialog("/");
                     }
 
 
@@ -212,7 +209,7 @@ schedule.scheduleJob(minuterule, function(){
 
 
 
-    GetNewReminderRequests();
+   // GetNewReminderRequests();
 
 
 });
