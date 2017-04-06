@@ -519,28 +519,28 @@ bot.dialog('/BotBit', [
 
 
 
-bot.dialog('logoutDialog', function (session, args) {
+bot.dialog('restartDialog', function (session, args) {
 
     session.userData.userId = session.message.user.id;
 
-    session.userData.PostEntityInsert = 'false';
-
     userId = session.message.user.id;
 
-    session.endDialog("Goodbye.... I'm ending our conversation now by logging out...");
+    session.userData.PostEntityInsert = 'false';
 
-    session.beginDialog("/");
+    session.endDialog("אז מתחילים מחדש..");
+
+    //session.beginDialog("/");
 
 
 }).triggerAction({ 
     onFindAction: function (context, callback) {
         // Recognize users utterance
         switch (context.message.text.toLowerCase()) {
-            case '/logout':
+            case '/restart':
                 // You can trigger the action with callback(null, 1.0) but you're also
                 // allowed to return additional properties which will be passed along to
                 // the triggered dialog.
-                callback(null, 1.0, { topic: 'logout' });
+                callback(null, 1.0, { topic: 'restart' });
                 break;
             default:
                 callback(null, 0.0);
