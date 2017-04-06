@@ -27,16 +27,99 @@ var now = moment();
 
 // Cron Scheduler  //////////////////////////////////////////////////////////////////////
 var schedule = require('node-schedule');
-var Dailyrule = new schedule.RecurrenceRule();
+//var Dailyrule = new schedule.RecurrenceRule();
 
-Dailyrule.hour = hour;
-Dailyrule.minute = minutes;
+var minuterule = new schedule.RecurrenceRule();
+minuterule.minute = new schedule.Range(0, 59, 5)
+
+//Dailyrule.hour = hour;
+//Dailyrule.minute = minutes;
  
-var z = schedule.scheduleJob(Dailyrule, function(){
+//var z = schedule.scheduleJob(Dailyrule, function(){
 
  // bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
 
+//});
+
+
+schedule.scheduleJob(minuterule, function(){
+
+    console.log('sendDailyReminder');
+
+    //bot.beginDialog(address, '/sendDailyReminder');
+
+    //session.beginDialog("/");
+   // SendQueueEmail();
+
+ //   GetMessageRecord();
+
+
+            var cursor = colEntities.find({ 'EntityStatus': 'new' });
+            
+            var result = [];
+            cursor.each(function(err, doc) {
+                if(err)
+                    throw err;
+                if (doc === null) {
+                    // doc is null when the last document has been processed
+
+
+                    if (result.length>0) {
+                        
+                        GetCurrentUserAddress(result[0].userId);
+                         
+                        session.send("userId: ", result[0].userId); 
+
+                        session.send("ReminderTime: ", result[0].ReminderTime); 
+
+                        session.send("ReminderDay: ", result[0].ReminderDay); 
+ 
+                    } 
+
+
+                    return;
+                }
+                // do something with each doc, like push Email into a results array
+                result.push(doc);
+            }); 
+
+
+
+            function GetCurrentUserAddress(userId) {
+
+
+                        var cursor = colUserData.find({ 'userId': userId });
+                        
+                        var result = [];
+                        cursor.each(function(err, doc) {
+                            if(err)
+                                throw err;
+                            if (doc === null) {
+                                // doc is null when the last document has been processed
+
+
+                                if (result.length>0) {
+                                    
+                                    
+                                    addressId = result[0].addressId;
+
+                                    session.send("addressId: ", addressId);
+            
+                                } 
+
+
+                                return;
+                            }
+                            // do something with each doc, like push Email into a results array
+                            result.push(doc);
+                        }); 
+
+
+            } 
+
+
 });
+
 
 
 
@@ -246,6 +329,7 @@ bot.dialog('/', [
               'ReminderType': session.userData.ReminderType,
               'EntityType': session.userData.userChoice,
               'ReminderText' : session.userData.ReminderText,
+              'EntityStatus': 'new',
               'userId': session.userData.userId
         }; 
 
