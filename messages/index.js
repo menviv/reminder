@@ -354,7 +354,7 @@ bot.dialog('/', [
 
         if (results.response) {
             session.userData.userChoice = results.response.entity;
-            session.send(esults.response.entity);
+            session.send(results.response.entity);
 
             session.sendTyping();
 
