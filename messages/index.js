@@ -25,6 +25,38 @@ var now = moment();
 //
 
 
+
+
+
+///////// DB Module ///////////////////////
+var mongo = require('mongodb');
+var connString = 'mongodb://mom:mom@ds147510.mlab.com:47510/violetmom';
+var MongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
+var dbm;
+var colUserData;
+var colStoreData;
+var colEntities;
+
+// Initialize connection once
+ 
+mongo.MongoClient.connect(connString, function(err, database) {
+  if(err) throw err;
+  
+  dbm = database;
+  colStoreData = dbm.collection('StoreData');
+  colUserData = dbm.collection('UserData'); 
+  colEntities = dbm.collection('Entities'); 
+  
+});
+
+
+var request = require('request');
+
+
+
+
+
 // Cron Scheduler  //////////////////////////////////////////////////////////////////////
 var schedule = require('node-schedule');
 
@@ -141,30 +173,6 @@ schedule.scheduleJob(minuterule, function(){
 
 
 
-///////// DB Module ///////////////////////
-var mongo = require('mongodb');
-var connString = 'mongodb://mom:mom@ds147510.mlab.com:47510/violetmom';
-var MongoClient = require('mongodb').MongoClient;
-var ObjectID = require('mongodb').ObjectID;
-var dbm;
-var colUserData;
-var colStoreData;
-var colEntities;
-
-// Initialize connection once
- 
-mongo.MongoClient.connect(connString, function(err, database) {
-  if(err) throw err;
-  
-  dbm = database;
-  colStoreData = dbm.collection('StoreData');
-  colUserData = dbm.collection('UserData'); 
-  colEntities = dbm.collection('Entities'); 
-  
-});
-
-
-var request = require('request');
 
 
 "use strict";
