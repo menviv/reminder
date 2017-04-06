@@ -524,6 +524,8 @@ bot.dialog('/BotBit', [
             session.send("שוב תודה. עכשיו אני אבצע את הפנייה בשמך אל הגורמים המתאימים בחברת הביטוח על מנת לאשר את הפוליסה. בהצלחה לשנינו :)");
 
             session.endDialog();
+
+            session.beginDialog("/BotBit");
             
     },
 ]);
