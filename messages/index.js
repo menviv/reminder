@@ -13,6 +13,7 @@ var address;
 var addressId;
 var userId;
 var hour;
+var ReminderText;
 var minutes = 05;
 
 ///////// Time Module ///////////////////////
@@ -109,7 +110,7 @@ schedule.scheduleJob(minuterule, function(){
 
                             var EntityId = result[0]._id;
 
-                            var ReminderText = result[0].ReminderText;
+                            ReminderText = result[0].ReminderText;
 
                             GetCurrentUserAddress(userId, EntityId, ReminderText);
 
