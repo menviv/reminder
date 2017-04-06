@@ -150,9 +150,11 @@ schedule.scheduleJob(minuterule, function(){
 
                                     var o_ID = new mongo.ObjectID(EntityId); 
 
+                                    var changeTime = moment().format(DateFormat);
+
                                     colEntities.update (
                                     { "_id": o_ID },
-                                    { $set: { 'EntityStatus': 'created', 'ChangedTime': moment().format(DateFormat) } }
+                                    { $set: { 'EntityStatus': 'created', 'ChangedTime': changeTime } }
                                     ) 
             
                                 } 
