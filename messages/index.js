@@ -402,6 +402,10 @@ bot.dialog('/sendDailyReminder', [
 
                             session.send("תזכורת וזה.." + result[0].ReminderText);
 
+                            session.send("userId" + userId);
+
+                            session.send("addressId" + addressId);
+
                         }
 
                                 
