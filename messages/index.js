@@ -399,9 +399,13 @@ bot.dialog('/sendDailyReminder', [
 
 
                     if (result.length>0) {
-                        
-                        session.send("תזכורת וזה.." + result[0].ReminderText);
- 
+
+                        for (i=0; i<result.length; i++) {
+
+                            session.send("תזכורת וזה.." + result[0].ReminderText);
+
+                        }
+
                                 
                     } else {
                         
