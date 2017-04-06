@@ -400,7 +400,7 @@ bot.dialog('/sendDailyReminder', [
 
                     if (result.length>0) {
                         
-                        session.send("תזכורת וזה.." + result[0].ReminderType.entity);
+                        session.send("תזכורת וזה.." + result[0].ReminderText);
  
                                 
                     } else {
