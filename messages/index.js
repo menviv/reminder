@@ -22,36 +22,41 @@ var LogTimeStame = moment().format(DateFormat);
 
 var now = moment();
 //var hour = now.hour();
-//var minutes = now.minutes()+5;
+//
 
 
 // Cron Scheduler  //////////////////////////////////////////////////////////////////////
 var schedule = require('node-schedule');
-//var Dailyrule = new schedule.RecurrenceRule();
+
+function CreateJobToQueue(hour, addressId, userId, EntityId) {
+
+    var Dailyrule = new schedule.RecurrenceRule();
+    var now = moment();
+    var minutes = now.minutes()+2;
+
+    Dailyrule.hour = hour;
+    Dailyrule.minute = minutes;
+
+
+    var z = schedule.scheduleJob(Dailyrule, function(){
+
+    bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId, EntityId: EntityId });
+
+    });
+
+
+}
+
+
+
+
+
+
 
 var minuterule = new schedule.RecurrenceRule();
-minuterule.minute = new schedule.Range(0, 59, 2)
-
-//Dailyrule.hour = hour;
-//Dailyrule.minute = minutes;
- 
-//var z = schedule.scheduleJob(Dailyrule, function(){
-
- // bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
-
-//});
-
+minuterule.minute = new schedule.Range(0, 59, 1)
 
 schedule.scheduleJob(minuterule, function(){
-
-    console.log('sendDailyReminder');
-
-    //bot.beginDialog(address, '/sendDailyReminder');
-
-    //session.beginDialog("/");
-   // SendQueueEmail();
-
- //   GetMessageRecord();
 
 
             var cursor = colEntities.find({ 'EntityStatus': 'new' });
@@ -107,9 +112,14 @@ schedule.scheduleJob(minuterule, function(){
 
                                     address = result[0].AddressData; 
 
-                                    //bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId });
+                                    CreateJobToQueue(hour, addressId, userId, EntityId);
 
-                                    bot.beginDialog(address, '/sendDailyReminder', { addressId: addressId, userId: userId, EntityId: EntityId });
+                                    var o_ID = new mongo.ObjectID(EntityId); 
+
+                                    colEntities.update (
+                                    { "_id": o_ID },
+                                    { $set: { 'EntityStatus': 'created', 'ChangedTime':LogTimeStame } }
+                                    ) 
             
                                 } 
 
