@@ -498,9 +498,10 @@ bot.dialog('/createReminder', [
 
                 var now = moment();
                 var minutes = now.minutes()+1;
+                var ReminderTime = parseInt(session.userData.ReminderTime)-3;
 
                 
-                var date = new Date(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0);
+                var date = new Date(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, ReminderTime, minutes, 0);
 
                 session.send("date: " + date);
 
