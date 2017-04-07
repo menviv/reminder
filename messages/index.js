@@ -504,6 +504,8 @@ bot.dialog('/createReminder', [
 
                 session.send("date: " + date);
 
+                session.send("now: " + now);
+
                 var j = schedule.scheduleJob(date, function(){
                 
                         bot.beginDialog(session.message.address, '/sendReminder', { addressId: session.message.address.id, userId: session.message.user.id, ReminderText: session.userData.ReminderText });
