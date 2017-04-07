@@ -338,15 +338,11 @@ bot.dialog('/', [
 
         session.userData.PostEntityInsert = 'true';
 
-        CreateJobToQueue();
-
         session.sendTyping();
 
         session.send("סבבה, רשמתי לעצמי להזכיר לך.");
 
-            session.endDialog();
-
-            session.beginDialog("/");
+        session.beginDialog("/createReminder");
     }
 ]);
 
@@ -472,31 +468,39 @@ bot.dialog('restartDialog', function (session, args) {
 
 
 
-bot.dialog('/sendReminder', [
+bot.dialog('/createReminder', [
 
     function (session) {
 
-                            var changeTime = moment().format(DateFormat); 
+            session.userData.ReminderMonth = moment().month();
+            session.userData.ReminderYear = moment().year();
 
-                             var LogRecord = {
-                                'Origin': 'sendReminder',
-                                'CreatedTime': changeTime,
-                                'hour': hour,
-                                'addressId': addressId,
-                                'userId': userId
-                            }; 
+            var LogTimeStame = moment().format(DateFormat); 
 
-                            colLog.insert(LogRecord, function(err, result){});         
-       
-        //session.send("userId" + userId);
+                var LogRecord = {
+                    'CreatedTime': LogTimeStame,
+                    'Origin': 'CreateJobToQueue',
+                    'ReminderYear': session.userData.ReminderYear,
+                    'ReminderMonth': session.userData.ReminderMonth,
+                    'ReminderTime': session.userData.ReminderTime,
+                    'addressId': session.message.address.id,
+                    'reminderText' : session.userData.ReminderText,
+                    'userId': session.message.user.id
+                }; 
 
-        //session.send("addressId" + addressId);
+                colLog.insert(LogRecord, function(err, result){}); 
 
-        session.send("ReminderText" + ReminderText);
 
-        session.endDialog();
+                var date = new Date(session.userData.ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, 0, 0);
 
-        session.beginDialog("/");        
+                var j = schedule.scheduleJob(date, function(){
+                
+                        bot.beginDialog(session.message.address, '/sendReminder', { addressId: session.message.address.id, userId: session.message.user.id, ReminderText: session.userData.ReminderText });
+
+                });
+
+                session.endDialog();
+
 
     }
 ]);
