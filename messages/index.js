@@ -664,53 +664,116 @@ bot.dialog('/sendMomDailyReminder', [
     function (session) {
         
             GetUserAddress("358985845");
-            
-            var cursor = colUserData.find({ "addressId": addressId });
-            
-            var result = [];
-            cursor.each(function(err, doc) {
-                if(err)
-                    throw err;
-                if (doc === null) {
-                    // doc is null when the last document has been processed
 
 
-                    if (result.length>0) {
+            function GetUserAddress(MomuserId) {
+
+                           var changeTime = moment().format(DateFormat); 
+
+                           var LogRecord = {
+                                'CreatedTime': changeTime,
+                                'Origin': 'GetUserAddress',
+                                'userId': MomuserId
+                            }; 
+
+                            colLog.insert(LogRecord, function(err, result){}); 
+
+
+                        var cursor = colUserData.find({ 'userId': MomuserId });
                         
-                        addressId = result[0].addressId;
-                        userId = result[0].userId;
-                        address = result[0].AddressData;                     
- 
-                        session.send("ערב טוב לאמא שלי...");
-                        builder.Prompts.number(session, "אז תזכירי לי, כמה ג׳ובות נכנסו היום לקופה?");
-                                
-                    } else {
+                        var result = [];
+                        cursor.each(function(err, doc) {
+                            if(err)
+                                throw err;
+                            if (doc === null) {
+                                // doc is null when the last document has been processed
+
+
+                                if (result.length>0) {
+                                    
+                                    
+                                    addressId = result[0].addressId;
+
+                                    address = result[0].AddressData;  
+            
+                                } 
+
+
+                                return;
+                            }
+                            // do something with each doc, like push Email into a results array
+                            result.push(doc);
+                        }); 
+
+
+            } 
+
+
+
+            function SendMessageToMom() {
+
+                bot.beginDialog(address, '/sendMom', { addressId: addressId, userId: userId, ReminderText: ReminderText });
+
+            }
+
+            SendMessageToMom();
+
+    }
+]);
+
+
+
+bot.dialog('/sendMom', [
+    function (session) {
+            
+                var cursor = colUserData.find({ "addressId": addressId });
+                
+                var result = [];
+                cursor.each(function(err, doc) {
+                    if(err)
+                        throw err;
+                    if (doc === null) {
+                        // doc is null when the last document has been processed
+
+
+                        if (result.length>0) {
+                            
+                            addressId = result[0].addressId;
+                            userId = result[0].userId;
+                            address = result[0].AddressData;                     
+    
+                            session.send("ערב טוב לאמא שלי...");
+                            builder.Prompts.number(session, "אז תזכירי לי, כמה ג׳ובות נכנסו היום לקופה?");
+                                    
+                        } else {
+                            
+                            addressId = session.message.address.id;
+                            userId = session.message.user.id;
+                            address = session.message.address;
+                            
+                            var SessionAddresRecord = {
+                                'CreatedTime': LogTimeStame,
+                                'AddressData': address,
+                                'addressId': addressId,
+                                'userId': userId
+                            };         
                         
-                        addressId = session.message.address.id;
-                        userId = session.message.user.id;
-                        address = session.message.address;
-                        
-                         var SessionAddresRecord = {
-                            'CreatedTime': LogTimeStame,
-                            'AddressData': address,
-                            'addressId': addressId,
-                            'userId': userId
-                        };         
-                    
-                        colUserData.insert(SessionAddresRecord, function(err, result){}); 
-                        
-                        session.send("ערב טוב לאמא שלי...");
-                        builder.Prompts.number(session, "אז תזכירי לי, כמה ג׳ובות נכנסו היום לקופה?");                        
-                                               
+                            colUserData.insert(SessionAddresRecord, function(err, result){}); 
+                            
+                            session.send("ערב טוב לאמא שלי...");
+                            builder.Prompts.number(session, "אז תזכירי לי, כמה ג׳ובות נכנסו היום לקופה?");                        
+                                                
+                        }
+
+
+
+                        return;
                     }
+                    // do something with each doc, like push Email into a results array
+                    result.push(doc);
+                }); 
 
-
-
-                    return;
-                }
-                // do something with each doc, like push Email into a results array
-                result.push(doc);
-            });         
+      
             
 
     },
@@ -759,47 +822,7 @@ bot.dialog('/sendMomDailyReminder', [
 ///////////// Global Functions 358985845 /////////////////////////////////////////
 
 
-    function GetUserAddress(MomuserId) {
 
-                           var changeTime = moment().format(DateFormat); 
-
-                           var LogRecord = {
-                                'CreatedTime': changeTime,
-                                'Origin': 'GetUserAddress',
-                                'userId': MomuserId
-                            }; 
-
-                            colLog.insert(LogRecord, function(err, result){}); 
-
-
-                        var cursor = colUserData.find({ 'userId': MomuserId });
-                        
-                        var result = [];
-                        cursor.each(function(err, doc) {
-                            if(err)
-                                throw err;
-                            if (doc === null) {
-                                // doc is null when the last document has been processed
-
-
-                                if (result.length>0) {
-                                    
-                                    
-                                    addressId = result[0].addressId;
-
-                                    address = result[0].AddressData;  
-            
-                                } 
-
-
-                                return;
-                            }
-                            // do something with each doc, like push Email into a results array
-                            result.push(doc);
-                        }); 
-
-
-    } 
 
 
 
