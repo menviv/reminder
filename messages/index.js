@@ -635,7 +635,7 @@ bot.dialog('/sendDailyReminder', [
 
 bot.dialog('momDialog', function (session, args) {
 
-    session.endDialog("momDialog");
+    //session.endDialog("momDialog");
 
     session.beginDialog("/sendMomDailyReminder");
 
@@ -663,7 +663,7 @@ bot.dialog('momDialog', function (session, args) {
 bot.dialog('/sendMomDailyReminder', [
     function (session) {
         
-            GetUserAddress("358985845");
+            GetUserAddress("302621400"); //358985845 
 
 
             function GetUserAddress(MomuserId) {
