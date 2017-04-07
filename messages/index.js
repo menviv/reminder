@@ -478,7 +478,7 @@ bot.dialog('/createReminder', [
 
     function (session) {
 
-            session.userData.ReminderMonth = moment().month();
+            session.userData.ReminderMonth = moment().month()+1;
             session.userData.ReminderYear = moment().year();
 
             var LogTimeStame = moment().format(DateFormat); 
@@ -509,6 +509,8 @@ bot.dialog('/createReminder', [
                 });
 
                 session.endDialog();
+
+                session.beginDialog("/");
 
 
     }
