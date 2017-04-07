@@ -309,7 +309,7 @@ bot.dialog('/', [
         
         session.sendTyping();
 
-        builder.Prompts.number(session, "שעה מועדפת? אם מדובר בשמונה בערב אז כאדי לציין '20'"); 
+        builder.Prompts.number(session, "שעה מועדפת? אם מדובר בשמונה בערב אז כדאי לציין '20'"); 
     },
     function (session, results) {
 
@@ -343,6 +343,12 @@ bot.dialog('/', [
         session.send("סבבה, רשמתי לעצמי להזכיר לך.");
 
         session.beginDialog("/createReminder");
+
+    },
+    function (session, results) {
+
+        session.endDialog();
+        
     }
 ]);
 
@@ -490,8 +496,11 @@ bot.dialog('/createReminder', [
 
                 colLog.insert(LogRecord, function(err, result){}); 
 
+                var now = moment();
+                var minutes = now.minutes()+1;
 
-                var date = new Date(session.userData.ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, 0, 0);
+
+                var date = new Date(session.userData.ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0);
 
                 var j = schedule.scheduleJob(date, function(){
                 
