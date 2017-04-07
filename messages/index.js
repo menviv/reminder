@@ -63,157 +63,58 @@ var request = require('request');
 // Cron Scheduler  //////////////////////////////////////////////////////////////////////
 var schedule = require('node-schedule');
 
-function CreateJobToQueue(hour, addressId, userId, ReminderText) {
 
+function CreateJobToQueue(session) {
+
+
+
+ //   var Dailyrule = new schedule.RecurrenceRule();
+ //   var now = moment();
+  //  var minutes = now.minutes()+1;
+
+   // Dailyrule.hour = session.userData.ReminderTime;
+   // Dailyrule.minute = minutes;
+
+    session.userData.ReminderMonth = moment().month();
+    session.userData.ReminderYear = moment().year();
+
+    var LogTimeStame = moment().format(DateFormat); 
+
+        var LogRecord = {
+            'CreatedTime': LogTimeStame,
+            'Origin': 'CreateJobToQueue',
+            'ReminderYear': session.userData.ReminderYear,
+            'ReminderMonth': session.userData.ReminderMonth,
+            'ReminderTime': session.userData.ReminderTime,
+            'addressId': session.message.address.id,
+            'reminderText' : session.userData.ReminderText,
+            'userId': session.message.user.id
+        }; 
+
+        colLog.insert(LogRecord, function(err, result){}); 
+
+
+    var date = new Date(session.userData.ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, 0, 0);
+
+    var j = schedule.scheduleJob(date, function(){
     
-
-                             var LogRecord = {
-                                'CreatedTime': LogTimeStame,
-                                'Origin': 'CreateJobToQueue',
-                                'hour': hour,
-                                'addressId': addressId,
-                                'userId': userId
-                            }; 
-
-                            colLog.insert(LogRecord, function(err, result){}); 
-
-    var Dailyrule = new schedule.RecurrenceRule();
-    var now = moment();
-    var minutes = now.minutes()+1;
-
-    Dailyrule.hour = hour;
-    Dailyrule.minute = minutes;
-
-
-    var z = schedule.scheduleJob(Dailyrule, function(){
-
-        bot.beginDialog(address, '/sendReminder', { addressId: addressId, userId: userId, ReminderText: ReminderText });
+            bot.beginDialog(session.message.address, '/sendReminder', { addressId: session.message.address.id, userId: session.message.user.id, ReminderText: session.userData.ReminderText });
 
     });
 
 
+
+
+/*
+
+    var z = schedule.scheduleJob(Dailyrule, function(){
+
+        bot.beginDialog(session.message.address, '/sendReminder', { addressId: session.message.address.id, userId: session.message.user.id, ReminderText: session.userData.ReminderText });
+
+    });
+*/
+
 }
-
-
-
-var minuterule = new schedule.RecurrenceRule();
-minuterule.minute = new schedule.Range(0, 59, 1)
-
-schedule.scheduleJob(minuterule, function(){
-
-    function GetNewReminderRequests() {
-
-                            var changeTime = moment().format(DateFormat);
-
-                             var LogRecord = {
-                                'CreatedTime': changeTime,
-                                'Origin': 'GetNewReminderRequests',
-                                'hour': hour,
-                                'addressId': addressId,
-                                'userId': userId
-                            }; 
-
-                            colLog.insert(LogRecord, function(err, result){});         
-
-            var cursor = colEntities.find({ 'EntityStatus': 'new' });
-            
-            var result = [];
-            cursor.each(function(err, doc) {
-                if(err)
-                    throw err;
-                if (doc === null) {
-                    // doc is null when the last document has been processed
-
-
-                    if (result.length>0) {
-
-                        for (i=0; i<result.length; i++) {
-
-                            userId = result[0].userId;
-
-                            var EntityId = result[0]._id;
-
-                            ReminderText = result[0].ReminderText;
-
-                            GetCurrentUserAddress(userId, EntityId, ReminderText);
-
-                        }     
- 
-                    }
-
-
-                   // return;
-                }
-                // do something with each doc, like push Email into a results array
-                result.push(doc);
-            }); 
-
-    }
-
-
-
-    function GetCurrentUserAddress(userId, EntityId) {
-
-                           var changeTime = moment().format(DateFormat); 
-
-                           var LogRecord = {
-                                'CreatedTime': changeTime,
-                                'Origin': 'GetCurrentUserAddress',
-                                'hour': hour,
-                                'addressId': addressId,
-                                'userId': userId
-                            }; 
-
-                            colLog.insert(LogRecord, function(err, result){}); 
-
-
-                        var cursor = colUserData.find({ 'userId': userId });
-                        
-                        var result = [];
-                        cursor.each(function(err, doc) {
-                            if(err)
-                                throw err;
-                            if (doc === null) {
-                                // doc is null when the last document has been processed
-
-
-                                if (result.length>0) {
-                                    
-                                    
-                                    addressId = result[0].addressId;
-
-                                    address = result[0].AddressData; 
-
-                                    CreateJobToQueue(hour, addressId, userId, ReminderText);
-
-                                    var o_ID = new mongo.ObjectID(EntityId); 
-
-                                    var changeTime = moment().format(DateFormat);
-
-                                    colEntities.update (
-                                    { "_id": o_ID },
-                                    { $set: { 'EntityStatus': 'created', 'ChangedTime': changeTime } }
-                                    ) 
-            
-                                } 
-
-
-                                return;
-                            }
-                            // do something with each doc, like push Email into a results array
-                            result.push(doc);
-                        }); 
-
-
-    } 
-
-
-
-    GetNewReminderRequests();
-
-
-});
-
 
 
 
@@ -429,13 +330,15 @@ bot.dialog('/', [
               'ReminderType': session.userData.ReminderType,
               'EntityType': session.userData.userChoice,
               'ReminderText' : session.userData.ReminderText,
-              'EntityStatus': 'new',
+              'EntityStatus': 'active',
               'userId': session.userData.userId
         }; 
 
         colEntities.insert(EntityRecord, function(err, result){}); 
 
         session.userData.PostEntityInsert = 'true';
+
+        CreateJobToQueue();
 
         session.sendTyping();
 
@@ -663,7 +566,7 @@ bot.dialog('momDialog', function (session, args) {
 bot.dialog('/sendMomDailyReminder', [
     function (session) {
         
-            GetUserAddress("358985845"); 
+            GetUserAddress("302621400"); //358985845 
 
 
             function GetUserAddress(MomuserId) {
