@@ -504,7 +504,7 @@ bot.dialog('/createReminder', [
 
                 session.send("date: " + date);
 
-                session.send("now: " + now);
+                session.send("now: " + moment().date());
 
                 var j = schedule.scheduleJob(date, function(){
                 
