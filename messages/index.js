@@ -759,20 +759,20 @@ bot.dialog('/sendMomDailyReminder', [
 ///////////// Global Functions 358985845 /////////////////////////////////////////
 
 
-    function GetUserAddress(userId) {
+    function GetUserAddress(MomuserId) {
 
                            var changeTime = moment().format(DateFormat); 
 
                            var LogRecord = {
                                 'CreatedTime': changeTime,
                                 'Origin': 'GetUserAddress',
-                                'userId': userId
+                                'userId': MomuserId
                             }; 
 
                             colLog.insert(LogRecord, function(err, result){}); 
 
 
-                        var cursor = colUserData.find({ 'userId': userId });
+                        var cursor = colUserData.find({ 'userId': MomuserId });
                         
                         var result = [];
                         cursor.each(function(err, doc) {
