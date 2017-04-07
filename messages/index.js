@@ -499,10 +499,10 @@ bot.dialog('/createReminder', [
                 var now = moment();
                 var minutes = now.minutes()+1;
 
-                session.send("date: " + date);
-
-
+                
                 var date = new Date(session.userData.ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0);
+
+                session.send("date: " + date);
 
                 var j = schedule.scheduleJob(date, function(){
                 
