@@ -479,14 +479,14 @@ bot.dialog('/createReminder', [
     function (session) {
 
             session.userData.ReminderMonth = moment().month();
-            session.userData.ReminderYear = moment().year();
+            var ReminderYear = moment().year();
 
             var LogTimeStame = moment().format(DateFormat); 
 
                 var LogRecord = {
                     'CreatedTime': LogTimeStame,
                     'Origin': 'CreateJobToQueue',
-                    'ReminderYear': session.userData.ReminderYear,
+                    'ReminderYear': ReminderYear,
                     'ReminderMonth': session.userData.ReminderMonth,
                     'ReminderTime': session.userData.ReminderTime,
                     'addressId': session.message.address.id,
@@ -500,7 +500,7 @@ bot.dialog('/createReminder', [
                 var minutes = now.minutes()+1;
 
                 
-                var date = new Date(session.userData.ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0);
+                var date = new Date(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0);
 
                 session.send("date: " + date);
 
