@@ -499,16 +499,14 @@ bot.dialog('/createReminder', [
 
                 var now = moment();
                 var minutes = now.minutes()+1;
-                var ReminderTime = parseInt(session.userData.ReminderTime);
-
                 
-                var date = new Date(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, ReminderTime, minutes, 0);
+                var date = new Date(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0);
 
-                //session.send("date: " + date);
+                session.send("minutes: " + minutes);
 
                 //session.send("now: " + moment().format(DateFormat) );
 
-                session.send("date: " + session.message.address);
+                session.send("address.id: " + session.message.address.id);
 
                 var j = schedule.scheduleJob(date, function(){
                 
@@ -537,13 +535,14 @@ bot.dialog('/sendReminder', [
                              var LogRecord = {
                                 'Origin': 'sendReminder',
                                 'CreatedTime': changeTime,
+                                'ReminderText': ReminderText,
                                 'addressId': session.message.address.id,
                                 'userId': session.message.user.id
                             }; 
 
                             colLog.insert(LogRecord, function(err, result){});         
        
-        session.send("This is a friendly reminder ");
+        session.send("ReminderText: "+ReminderText);
 
         session.endDialog();
 
