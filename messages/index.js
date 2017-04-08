@@ -497,7 +497,7 @@ bot.dialog('/createReminder', [
                 colLog.insert(LogRecord, function(err, result){}); 
 
                 var now = moment();
-                var minutes = now.minutes()+1;
+                var minutes = now.minutes()+2;
                 var ReminderTime = parseInt(session.userData.ReminderTime)-3;
 
                 
@@ -506,6 +506,8 @@ bot.dialog('/createReminder', [
                 session.send("date: " + date);
 
                 session.send("now: " + moment().format(DateFormat) );
+
+                session.send("date: " + session.message.address);
 
                 var j = schedule.scheduleJob(date, function(){
                 
