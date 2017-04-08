@@ -77,6 +77,7 @@ function CreateJobToQueue(session) {
 
     session.userData.ReminderMonth = moment().month();
     session.userData.ReminderYear = moment().year();
+    
 
     var LogTimeStame = moment().format(DateFormat); 
 
@@ -497,15 +498,15 @@ bot.dialog('/createReminder', [
                 colLog.insert(LogRecord, function(err, result){}); 
 
                 var now = moment();
-                var minutes = now.minutes()+2;
-                var ReminderTime = parseInt(session.userData.ReminderTime)-3;
+                var minutes = now.minutes()+1;
+                var ReminderTime = parseInt(session.userData.ReminderTime);
 
                 
                 var date = new Date(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, ReminderTime, minutes, 0);
 
-                session.send("date: " + date);
+                //session.send("date: " + date);
 
-                session.send("now: " + moment().format(DateFormat) );
+                //session.send("now: " + moment().format(DateFormat) );
 
                 session.send("date: " + session.message.address);
 
@@ -523,6 +524,33 @@ bot.dialog('/createReminder', [
     }
 ]);
 
+
+
+
+
+bot.dialog('/sendReminder', [
+
+    function (session) {
+
+                            var changeTime = moment().format(DateFormat); 
+
+                             var LogRecord = {
+                                'Origin': 'sendReminder',
+                                'CreatedTime': changeTime,
+                                'addressId': session.message.address.id,
+                                'userId': session.message.user.id
+                            }; 
+
+                            colLog.insert(LogRecord, function(err, result){});         
+       
+        session.send("This is a friendly reminder ");
+
+        session.endDialog();
+
+        session.beginDialog("/");
+
+    }
+]);
 
 
 
