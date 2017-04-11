@@ -318,7 +318,7 @@ bot.dialog('/', [
     },
     function (session, results) {
 
-        session.userData.ReminderTime = results.response;
+        session.userData.ReminderTime = results.response-3;
         
         session.sendTyping();
 
@@ -506,24 +506,9 @@ bot.dialog('/createReminder', [
                 var now = moment();
                 var minutes = now.minutes()+1;
 
-                //new Date(Date.UTC(year, month, day, hour, minute, second))
-
-                //var offset = new Date().getTimezoneOffset();
-
-                //session.send("offset: " + offset);
-
-                //var date = new Date(Date.UTC(2017, 4, 11, 23, 40, 0));
-
-                //session.send("date: " + date);
 
                 
                 var date = new Date(Date.UTC(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0));
-
-                session.send("minutes: " + now);
-
-                //session.send("now: " + moment().format(DateFormat) );
-
-                session.send("address.id: " + session.message.address.id);
 
                 var j = schedule.scheduleJob(date, function(){
                 
