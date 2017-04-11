@@ -17,6 +17,7 @@ var ReminderText;
 var minutes = 05;
 
 ///////// Time Module ///////////////////////
+var time = require('time');
 var moment = require('moment');
 var DateFormat = "DD-MM-YYYY HH:mm:ss";
 var LogTimeStame = moment().format(DateFormat); 
@@ -507,10 +508,14 @@ bot.dialog('/createReminder', [
                 var minutes = now.minutes()+1;
 
                 //new Date(Date.UTC(year, month, day, hour, minute, second))
+
+                var now = new time.Date();
+
+                now.setTimezone("Israel/Jerusalem");
                 
                 var date = new Date(Date.UTC(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0));
 
-                session.send("minutes: " + date);
+                session.send("minutes: " + now);
 
                 //session.send("now: " + moment().format(DateFormat) );
 
