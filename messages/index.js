@@ -167,6 +167,8 @@ bot.dialog('/', [
                                 session.userData.userId = session.message.user.id;
                                 address = session.message.address;
 
+                                var LogTimeStame = moment().format(DateFormat); 
+
                                 colUserData.update (
                                 { "userId": userId },
                                 { $set: { 'address': address, 'addressId': addressId, 'ChangedTime':LogTimeStame } }
@@ -230,6 +232,8 @@ bot.dialog('/', [
                             userId = session.message.user.id;
                             session.userData.userId = session.message.user.id;
                             address = session.message.address;
+
+                            var LogTimeStame = moment().format(DateFormat); 
                                 
                             var SessionAddresRecord = {
                                 'CreatedTime': LogTimeStame,
@@ -323,6 +327,8 @@ bot.dialog('/', [
     function (session, results) {
 
         session.userData.ReminderText = results.response;
+
+        var LogTimeStame = moment().format(DateFormat); 
 
         var EntityRecord = {
               'CreatedTime': LogTimeStame,
