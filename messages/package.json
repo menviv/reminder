@@ -17,6 +17,7 @@
     "path": "^0.12.7",
     "request": "^2.81.0",
     "restify": "^4.3.0",
+    "time": "^0.12.0",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
