@@ -512,12 +512,12 @@ bot.dialog('/createReminder', [
 
                 //session.send("offset: " + offset);
 
-                var date = new Date(Date.UTC(2017, 4, 11, 23, 40, 0));
+                //var date = new Date(Date.UTC(2017, 4, 11, 23, 40, 0));
 
-                session.send("date: " + date);
+                //session.send("date: " + date);
 
                 
-                //var date = new Date(Date.UTC(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0));
+                var date = new Date(Date.UTC(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0));
 
                 session.send("minutes: " + now);
 
