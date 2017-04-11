@@ -508,6 +508,10 @@ bot.dialog('/createReminder', [
 
                 //new Date(Date.UTC(year, month, day, hour, minute, second))
 
+                var offset = new Date().getTimezoneOffset();
+
+                session.send("offset: " + offset);
+
                 
                 var date = new Date(Date.UTC(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0));
 
