@@ -330,7 +330,10 @@ bot.dialog('/', [
 
         var LogTimeStame = moment().format(DateFormat); 
 
+        session.userData.o_id = new mongo.ObjectID();
+
         var EntityRecord = {
+              '_id': session.userData.o_id,
               'CreatedTime': LogTimeStame,
               'ReminderDay': session.userData.ReminderDay,
               'ReminderTime': session.userData.ReminderTime,
@@ -493,6 +496,7 @@ bot.dialog('/createReminder', [
                 var LogRecord = {
                     'CreatedTime': LogTimeStame,
                     'Origin': 'CreateJobToQueue',
+                    'EntityId': session.userData.o_id,
                     'ReminderYear': ReminderYear,
                     'ReminderMonth': session.userData.ReminderMonth,
                     'ReminderTime': session.userData.ReminderTime,
@@ -506,13 +510,13 @@ bot.dialog('/createReminder', [
                 var now = moment();
                 var minutes = now.minutes()+1;
 
-
+                session.message.o_id = session.userData.o_id;
                 
                 var date = new Date(Date.UTC(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0));
 
                 var j = schedule.scheduleJob(date, function(){
                 
-                        bot.beginDialog(session.message.address, '/sendReminder', { addressId: session.message.address.id, userId: session.message.user.id, ReminderText: session.userData.ReminderText });
+                        bot.beginDialog(session.message.address, '/sendReminder', { addressId: session.message.address.id, userId: session.message.user.id, ReminderText: session.userData.ReminderText, o_id: session.message.o_id });
 
                 });
 
@@ -536,13 +540,20 @@ bot.dialog('/sendReminder', [
 
                              var LogRecord = {
                                 'Origin': 'sendReminder',
+                                'Entityid': session.userData.o_id,
                                 'CreatedTime': changeTime,
                                 'ReminderText': ReminderText,
                                 'addressId': session.message.address.id,
                                 'userId': session.message.user.id
                             }; 
 
-                            colLog.insert(LogRecord, function(err, result){});         
+                            colLog.insert(LogRecord, function(err, result){});   
+
+
+                            colEntities.update (
+                                { "_id": session.userData.o_id },
+                                { $set: { 'EntityStatus': 'processed', 'ProcessedTime':changeTime } }
+                            );                                   
        
         session.send("ReminderText: "+ReminderText);
 
