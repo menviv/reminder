@@ -62,6 +62,7 @@ var request = require('request');
 
 // Cron Scheduler  //////////////////////////////////////////////////////////////////////
 var schedule = require('node-schedule');
+var j;
 
 
 function CreateJobToQueue(session) {
@@ -512,7 +513,7 @@ bot.dialog('/createReminder', [
                 
                 var date = new Date(Date.UTC(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0));
 
-                var j = schedule.scheduleJob(date, function(){
+                j = schedule.scheduleJob(date, function(){
                 
                         bot.beginDialog(session.message.address, '/sendReminder', { addressId: session.message.address.id, userId: session.message.user.id, ReminderText: session.userData.ReminderText, o_id: session.userData.o_id });
 
@@ -561,6 +562,43 @@ bot.dialog('/sendReminder', [
 
     }
 ]);
+
+
+
+
+
+
+bot.dialog('killDialog', function (session, args) {
+
+    session.userData.userId = session.message.user.id;
+
+    userId = session.message.user.id;
+
+    session.userData.PostEntityInsert = 'false';
+
+    j.cancel;
+
+    session.endDialog("איך אוהבת נקי...");
+
+    session.beginDialog("/");
+
+
+}).triggerAction({ 
+    onFindAction: function (context, callback) {
+        // Recognize users utterance
+        switch (context.message.text.toLowerCase()) {
+            case '/kill':
+                // You can trigger the action with callback(null, 1.0) but you're also
+                // allowed to return additional properties which will be passed along to
+                // the triggered dialog.
+                callback(null, 1.0, { topic: 'kill' });
+                break;
+            default:
+                callback(null, 0.0);
+                break;
+        }
+    } 
+});
 
 
 
