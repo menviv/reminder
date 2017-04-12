@@ -75,8 +75,8 @@ function CreateJobToQueue(session) {
    // Dailyrule.hour = session.userData.ReminderTime;
    // Dailyrule.minute = minutes;
 
-    session.message.ReminderMonth = moment().month();
-    session.message.ReminderYear = moment().year();
+    session.userData.ReminderMonth = moment().month();
+    session.userData.ReminderYear = moment().year();
     
 
     var LogTimeStame = moment().format(DateFormat); 
@@ -84,18 +84,18 @@ function CreateJobToQueue(session) {
         var LogRecord = {
             'CreatedTime': LogTimeStame,
             'Origin': 'CreateJobToQueue',
-            'ReminderYear': session.message.ReminderYear,
-            'ReminderMonth': session.message.ReminderMonth,
-            'ReminderTime': session.message.ReminderTime,
+            'ReminderYear': session.userData.ReminderYear,
+            'ReminderMonth': session.userData.ReminderMonth,
+            'ReminderTime': session.userData.ReminderTime,
             'addressId': session.message.address.id,
-            'reminderText' : session.message.ReminderText,
+            'reminderText' : session.userData.ReminderText,
             'userId': session.message.user.id
         }; 
 
         colLog.insert(LogRecord, function(err, result){}); 
 
 
-    var date = new Date(session.message.ReminderYear, session.message.ReminderMonth, session.message.ReminderDay, session.message.ReminderTime, 0, 0);
+    var date = new Date(session.userData.ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, 0, 0);
 
     var j = schedule.scheduleJob(date, function(){
     
@@ -260,15 +260,15 @@ bot.dialog('/', [
 
         if (results.response) {
 
-            session.message.userChoice = results.response.entity;
+            session.userData.userChoice = results.response.entity;
 
             session.sendTyping();
 
-            if (session.message.userChoice == 'תזכיר לי משהו' ||  session.message.userChoice == 'עוזר אישי') {
+            if (session.userData.userChoice == 'תזכיר לי משהו' ||  session.userData.userChoice == 'עוזר אישי') {
 
                 builder.Prompts.choice(session, "משהו קבוע או סתם קפריזה חולפת?", ["קבוע","קפריזה"]);
 
-            } else if (session.message.userChoice == 'בוטביט') {
+            } else if (session.userData.userChoice == 'בוטביט') {
 
                 session.send(results.response.entity);
 
@@ -294,11 +294,11 @@ bot.dialog('/', [
     },
     function (session, results) {
 
-        session.message.ReminderType = results.response;
+        session.userData.ReminderType = results.response;
 
         session.sendTyping();
 
-        if (session.message.ReminderType == 'קבוע') {
+        if (session.userData.ReminderType == 'קבוע') {
 
             builder.Prompts.number(session, "באיזה יום קבוע בשבוע? למשל אם יום רביעי אז נא לציין '4'"); 
 
@@ -310,7 +310,7 @@ bot.dialog('/', [
     },
     function (session, results) {
 
-        session.message.ReminderDay = results.response;
+        session.userData.ReminderDay = results.response;
         
         session.sendTyping();
 
@@ -318,7 +318,7 @@ bot.dialog('/', [
     },
     function (session, results) {
 
-        session.message.ReminderTime = results.response-3;
+        session.userData.ReminderTime = results.response-3;
         
         session.sendTyping();
 
@@ -326,20 +326,20 @@ bot.dialog('/', [
     },    
     function (session, results) {
 
-        session.message.ReminderText = results.response;
+        session.userData.ReminderText = results.response;
 
         var LogTimeStame = moment().format(DateFormat); 
 
-        session.message.o_id = new mongo.ObjectID();
+        session.userData.o_id = new mongo.ObjectID();
 
         var EntityRecord = {
               '_id': session.userData.o_id,
               'CreatedTime': LogTimeStame,
-              'ReminderDay': session.message.ReminderDay,
-              'ReminderTime': session.message.ReminderTime,
-              'ReminderType': session.message.ReminderType,
-              'EntityType': session.message.userChoice,
-              'ReminderText' : session.message.ReminderText,
+              'ReminderDay': session.userData.ReminderDay,
+              'ReminderTime': session.userData.ReminderTime,
+              'ReminderType': session.userData.ReminderType,
+              'EntityType': session.userData.userChoice,
+              'ReminderText' : session.userData.ReminderText,
               'EntityStatus': 'active',
               'userId': session.userData.userId
         }; 
@@ -496,12 +496,12 @@ bot.dialog('/createReminder', [
                 var LogRecord = {
                     'CreatedTime': LogTimeStame,
                     'Origin': 'CreateJobToQueue',
-                    'EntityId': session.message.o_id,
+                    'EntityId': session.userData.o_id,
                     'ReminderYear': ReminderYear,
-                    'ReminderMonth': session.message.ReminderMonth,
-                    'ReminderTime': session.message.ReminderTime,
+                    'ReminderMonth': session.userData.ReminderMonth,
+                    'ReminderTime': session.userData.ReminderTime,
                     'addressId': session.message.address.id,
-                    'reminderText' : session.message.ReminderText,
+                    'reminderText' : session.userData.ReminderText,
                     'userId': session.message.user.id
                 }; 
 
@@ -510,11 +510,11 @@ bot.dialog('/createReminder', [
                 var now = moment();
                 var minutes = now.minutes()+1;
                 
-                var date = new Date(Date.UTC(ReminderYear, session.message.ReminderMonth, session.message.ReminderDay, session.message.ReminderTime, minutes, 0));
+                var date = new Date(Date.UTC(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0));
 
                 var j = schedule.scheduleJob(date, function(){
                 
-                        bot.beginDialog(session.message.address, '/sendReminder', { addressId: session.message.address.id, userId: session.message.user.id, ReminderText: session.message.ReminderText, o_id: session.message.o_id });
+                        bot.beginDialog(session.message.address, '/sendReminder', { addressId: session.message.address.id, userId: session.message.user.id, ReminderText: session.userData.ReminderText, o_id: session.userData.o_id });
 
                 });
 
@@ -538,9 +538,9 @@ bot.dialog('/sendReminder', [
 
                              var LogRecord = {
                                 'Origin': 'sendReminder',
-                                'Entityid': session.message.o_id,
+                                'Entityid': session.userData.o_id,
                                 'CreatedTime': changeTime,
-                                'ReminderText': session.message.ReminderText,
+                                'ReminderText': session.userData.ReminderText,
                                 'addressId': session.message.address.id,
                                 'userId': session.message.user.id
                             }; 
@@ -549,11 +549,11 @@ bot.dialog('/sendReminder', [
 
 
                             colEntities.update (
-                                { "_id": session.message.o_id },
+                                { "_id": session.userData.o_id },
                                 { $set: { 'EntityStatus': 'processed', 'ProcessedTime':changeTime } }
                             );                                   
        
-        session.send("ReminderText: "+ session.message.ReminderText);
+        session.send("ReminderText: "+ session.userData.ReminderText);
 
         session.endDialog();
 
