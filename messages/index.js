@@ -260,7 +260,7 @@ bot.dialog('/', [
 
         if (results.response) {
 
-            session.userData.userChoice = results.response.entity;
+            session.message.userChoice = results.response.entity;
 
             session.sendTyping();
 
