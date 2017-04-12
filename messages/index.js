@@ -540,7 +540,7 @@ bot.dialog('/sendReminder', [
                                 'Origin': 'sendReminder',
                                 'Entityid': session.userData.o_id,
                                 'CreatedTime': changeTime,
-                                'ReminderText': ReminderText,
+                                'ReminderText': session.message.ReminderText,
                                 'addressId': session.message.address.id,
                                 'userId': session.message.user.id
                             }; 
@@ -549,11 +549,11 @@ bot.dialog('/sendReminder', [
 
 
                             colEntities.update (
-                                { "_id": session.userData.o_id },
+                                { "_id": session.message.o_id },
                                 { $set: { 'EntityStatus': 'processed', 'ProcessedTime':changeTime } }
                             );                                   
        
-        session.send("ReminderText: "+ReminderText);
+        session.send("ReminderText: "+ session.message.ReminderText);
 
         session.endDialog();
 
