@@ -75,8 +75,8 @@ function CreateJobToQueue(session) {
    // Dailyrule.hour = session.userData.ReminderTime;
    // Dailyrule.minute = minutes;
 
-    session.userData.ReminderMonth = moment().month();
-    session.userData.ReminderYear = moment().year();
+    session.message.ReminderMonth = moment().month();
+    session.message.ReminderYear = moment().year();
     
 
     var LogTimeStame = moment().format(DateFormat); 
@@ -84,18 +84,18 @@ function CreateJobToQueue(session) {
         var LogRecord = {
             'CreatedTime': LogTimeStame,
             'Origin': 'CreateJobToQueue',
-            'ReminderYear': session.userData.ReminderYear,
-            'ReminderMonth': session.userData.ReminderMonth,
-            'ReminderTime': session.userData.ReminderTime,
+            'ReminderYear': session.message.ReminderYear,
+            'ReminderMonth': session.message.ReminderMonth,
+            'ReminderTime': session.message.ReminderTime,
             'addressId': session.message.address.id,
-            'reminderText' : session.userData.ReminderText,
+            'reminderText' : session.message.ReminderText,
             'userId': session.message.user.id
         }; 
 
         colLog.insert(LogRecord, function(err, result){}); 
 
 
-    var date = new Date(session.userData.ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, 0, 0);
+    var date = new Date(session.message.ReminderYear, session.message.ReminderMonth, session.message.ReminderDay, session.message.ReminderTime, 0, 0);
 
     var j = schedule.scheduleJob(date, function(){
     
@@ -538,7 +538,7 @@ bot.dialog('/sendReminder', [
 
                              var LogRecord = {
                                 'Origin': 'sendReminder',
-                                'Entityid': session.userData.o_id,
+                                'Entityid': session.message.o_id,
                                 'CreatedTime': changeTime,
                                 'ReminderText': session.message.ReminderText,
                                 'addressId': session.message.address.id,
