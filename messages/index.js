@@ -264,11 +264,11 @@ bot.dialog('/', [
 
             session.sendTyping();
 
-            if (session.userData.userChoice == 'תזכיר לי משהו' ||  session.userData.userChoice == 'עוזר אישי') {
+            if (session.message.userChoice == 'תזכיר לי משהו' ||  session.message.userChoice == 'עוזר אישי') {
 
                 builder.Prompts.choice(session, "משהו קבוע או סתם קפריזה חולפת?", ["קבוע","קפריזה"]);
 
-            } else if (session.userData.userChoice == 'בוטביט') {
+            } else if (session.message.userChoice == 'בוטביט') {
 
                 session.send(results.response.entity);
 
@@ -294,11 +294,11 @@ bot.dialog('/', [
     },
     function (session, results) {
 
-        session.userData.ReminderType = results.response;
+        session.message.ReminderType = results.response;
 
         session.sendTyping();
 
-        if (session.userData.ReminderType == 'קבוע') {
+        if (session.message.ReminderType == 'קבוע') {
 
             builder.Prompts.number(session, "באיזה יום קבוע בשבוע? למשל אם יום רביעי אז נא לציין '4'"); 
 
@@ -310,7 +310,7 @@ bot.dialog('/', [
     },
     function (session, results) {
 
-        session.userData.ReminderDay = results.response;
+        session.message.ReminderDay = results.response;
         
         session.sendTyping();
 
@@ -318,7 +318,7 @@ bot.dialog('/', [
     },
     function (session, results) {
 
-        session.userData.ReminderTime = results.response-3;
+        session.message.ReminderTime = results.response-3;
         
         session.sendTyping();
 
@@ -326,20 +326,20 @@ bot.dialog('/', [
     },    
     function (session, results) {
 
-        session.userData.ReminderText = results.response;
+        session.message.ReminderText = results.response;
 
         var LogTimeStame = moment().format(DateFormat); 
 
-        session.userData.o_id = new mongo.ObjectID();
+        session.message.o_id = new mongo.ObjectID();
 
         var EntityRecord = {
               '_id': session.userData.o_id,
               'CreatedTime': LogTimeStame,
-              'ReminderDay': session.userData.ReminderDay,
-              'ReminderTime': session.userData.ReminderTime,
-              'ReminderType': session.userData.ReminderType,
-              'EntityType': session.userData.userChoice,
-              'ReminderText' : session.userData.ReminderText,
+              'ReminderDay': session.message.ReminderDay,
+              'ReminderTime': session.message.ReminderTime,
+              'ReminderType': session.message.ReminderType,
+              'EntityType': session.message.userChoice,
+              'ReminderText' : session.message.ReminderText,
               'EntityStatus': 'active',
               'userId': session.userData.userId
         }; 
@@ -496,12 +496,12 @@ bot.dialog('/createReminder', [
                 var LogRecord = {
                     'CreatedTime': LogTimeStame,
                     'Origin': 'CreateJobToQueue',
-                    'EntityId': session.userData.o_id,
+                    'EntityId': session.message.o_id,
                     'ReminderYear': ReminderYear,
-                    'ReminderMonth': session.userData.ReminderMonth,
-                    'ReminderTime': session.userData.ReminderTime,
+                    'ReminderMonth': session.message.ReminderMonth,
+                    'ReminderTime': session.message.ReminderTime,
                     'addressId': session.message.address.id,
-                    'reminderText' : session.userData.ReminderText,
+                    'reminderText' : session.message.ReminderText,
                     'userId': session.message.user.id
                 }; 
 
@@ -509,14 +509,12 @@ bot.dialog('/createReminder', [
 
                 var now = moment();
                 var minutes = now.minutes()+1;
-
-                session.message.o_id = session.userData.o_id;
                 
-                var date = new Date(Date.UTC(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0));
+                var date = new Date(Date.UTC(ReminderYear, session.message.ReminderMonth, session.message.ReminderDay, session.message.ReminderTime, minutes, 0));
 
                 var j = schedule.scheduleJob(date, function(){
                 
-                        bot.beginDialog(session.message.address, '/sendReminder', { addressId: session.message.address.id, userId: session.message.user.id, ReminderText: session.userData.ReminderText, o_id: session.message.o_id });
+                        bot.beginDialog(session.message.address, '/sendReminder', { addressId: session.message.address.id, userId: session.message.user.id, ReminderText: session.message.ReminderText, o_id: session.message.o_id });
 
                 });
 
