@@ -632,7 +632,9 @@ bot.dialog('/sendReminder', [
 
 bot.dialog('killDialog', function (session, args) {
 
-    session.endDialog(new Date(Date.UTC()));
+    session.send(new Date(Date.UTC()));
+
+    session.endDialog();
 
     session.beginDialog("/");
 
