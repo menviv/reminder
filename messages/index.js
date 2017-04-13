@@ -12,9 +12,10 @@ https://docs.botframework.com/en-us/node/builder/chat/dialogs/#waterfall
 var address;
 var addressId;
 var userId;
+var EntityToPublishDate;
+var EntityId;
 var hour;
 var ReminderText;
-var minutes = 05;
 
 ///////// Time Module ///////////////////////
 var moment = require('moment');
@@ -62,7 +63,57 @@ var request = require('request');
 
 // Cron Scheduler  //////////////////////////////////////////////////////////////////////
 var schedule = require('node-schedule');
-var j;
+
+
+
+    var cursor = colEntities.find({ 'EntityStatus': 'pending' });
+                
+    var result = [];
+    cursor.each(function(err, doc) {
+        if(err)
+            throw err;
+                if (doc === null) {
+
+                    if (result.length>0) {
+
+                        var curDate = new Date(Date.UTC());
+
+                        for (i=0; i<result.length; i++) {
+
+                            EntityToPublishDate = result[i].EntityToPublishDate; 
+
+                            if (EntityToPublishDate == curDate) {
+
+                                EntityId = result[i]._id; 
+
+                                ReminderText = result[i].ReminderText; 
+
+                                bot.beginDialog(result[i].AddressData, '/sendReminder', { ReminderText: session.userData.ReminderText });
+
+                            }
+
+                        }   
+                  
+                                        
+                    } 
+
+                        return;
+                    }
+
+                    result.push(doc);
+    }); 
+
+      
+
+
+
+
+
+
+
+
+
+
 
 
 function CreateJobToQueue(session) {
@@ -331,17 +382,25 @@ bot.dialog('/', [
 
         var LogTimeStame = moment().format(DateFormat); 
 
-        session.userData.o_id = new mongo.ObjectID();
+        var o_id = new mongo.ObjectID();
+
+        var now = moment();
+        var minutes = now.minutes()+1;
+
+        var date = new Date(Date.UTC(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0));
+
+
 
         var EntityRecord = {
-              '_id': session.userData.o_id,
+              '_id': o_id,
               'CreatedTime': LogTimeStame,
               'ReminderDay': session.userData.ReminderDay,
               'ReminderTime': session.userData.ReminderTime,
               'ReminderType': session.userData.ReminderType,
               'EntityType': session.userData.userChoice,
+              'EntityToPublishDate': date,
               'ReminderText' : session.userData.ReminderText,
-              'EntityStatus': 'active',
+              'EntityStatus': 'pending',
               'userId': session.userData.userId
         }; 
 
@@ -353,7 +412,11 @@ bot.dialog('/', [
 
         session.send("סבבה, רשמתי לעצמי להזכיר לך.");
 
-        session.beginDialog("/createReminder");
+        session.endDialog();
+
+        session.beginDialog("/");
+
+        //session.beginDialog("/createReminder");
 
     },
     function (session, results) {
@@ -539,22 +602,21 @@ bot.dialog('/sendReminder', [
 
                              var LogRecord = {
                                 'Origin': 'sendReminder',
-                                'Entityid': session.userData.o_id,
+                                'Entityid': EntityId,
                                 'CreatedTime': changeTime,
-                                'ReminderText': session.userData.ReminderText,
-                                'addressId': session.message.address.id,
-                                'userId': session.message.user.id
+                                'ReminderText': ReminderText,
+                                'address': address
                             }; 
 
                             colLog.insert(LogRecord, function(err, result){});   
 
 
                             colEntities.update (
-                                { "_id": session.userData.o_id },
+                                { "_id": EntityId },
                                 { $set: { 'EntityStatus': 'processed', 'ProcessedTime':changeTime } }
                             );                                   
        
-        session.send("ReminderText: "+ session.userData.ReminderText);
+        session.send("ReminderText: "+ ReminderText);
 
         session.endDialog();
 
@@ -570,15 +632,7 @@ bot.dialog('/sendReminder', [
 
 bot.dialog('killDialog', function (session, args) {
 
-    session.userData.userId = session.message.user.id;
-
-    userId = session.message.user.id;
-
-    session.userData.PostEntityInsert = 'false';
-
-    j.cancel;
-
-    session.endDialog("איך אוהבת נקי...");
+    session.endDialog(new Date(Date.UTC()));
 
     session.beginDialog("/");
 
