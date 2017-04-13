@@ -64,7 +64,7 @@ var request = require('request');
 // Cron Scheduler  //////////////////////////////////////////////////////////////////////
 var schedule = require('node-schedule');
 
-
+/*
 
     var cursor = colEntities.find({ 'EntityStatus': 'pending' });
                 
@@ -105,7 +105,7 @@ var schedule = require('node-schedule');
 
       
 
-
+*/
 
 
 
