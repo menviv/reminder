@@ -97,6 +97,7 @@ schedule.scheduleJob(rule, function(){
             'CreatedTime': LogTimeStame,
             'curDateTz': curDateTz,
             'EntityToPublishDate': EntityToPublishDate,
+            'Delta': EntityToPublishDate - curDateTz,
             'Origin': 'scheduleJob'
         }; 
 
