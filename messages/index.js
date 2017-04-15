@@ -427,7 +427,7 @@ bot.dialog('/', [
               'EntityType': session.userData.userChoice,
               'EntityToPublishDate': dateTz,
               'ReminderText' : session.userData.ReminderText,
-              'address': address,
+              'address': session.message.address,
               'EntityStatus': 'pending',
               'userId': session.userData.userId
         }; 
