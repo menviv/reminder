@@ -74,7 +74,14 @@ rule.minute = new schedule.Range(0, 59, 1);
 
 schedule.scheduleJob(rule, function(){
 
-    console.log(rule);
+        var LogTimeStame = moment().format(DateFormat); 
+
+        var LogRecord = {
+            'CreatedTime': LogTimeStame,
+            'Origin': 'scheduleJob'
+        }; 
+
+        colLog.insert(LogRecord, function(err, result){}); 
 
 
             var cursor = colEntities.find({ 'EntityStatus': 'pending' });
