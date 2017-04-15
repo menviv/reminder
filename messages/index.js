@@ -69,48 +69,58 @@ var request = require('request');
 // Cron Scheduler  //////////////////////////////////////////////////////////////////////
 var schedule = require('node-schedule');
 
-/*
 
-    var cursor = colEntities.find({ 'EntityStatus': 'pending' });
-                
-    var result = [];
-    cursor.each(function(err, doc) {
-        if(err)
-            throw err;
-                if (doc === null) {
 
-                    if (result.length>0) {
+var rule = new schedule.RecurrenceRule();
 
-                        var curDate = new Date(Date.UTC());
+rule.minute = new schedule.Range(0, 59, 1);
 
-                        for (i=0; i<result.length; i++) {
+schedule.scheduleJob(rule, function(){
 
-                            EntityToPublishDate = result[i].EntityToPublishDate; 
+    console.log(rule);
 
-                            if (EntityToPublishDate == curDate) {
 
-                                EntityId = result[i]._id; 
+            var cursor = colEntities.find({ 'EntityStatus': 'pending' });
+                        
+            var result = [];
+            cursor.each(function(err, doc) {
+                if(err)
+                    throw err;
+                        if (doc === null) {
 
-                                ReminderText = result[i].ReminderText; 
+                            if (result.length>0) {
 
-                                bot.beginDialog(result[i].AddressData, '/sendReminder', { ReminderText: session.userData.ReminderText });
+                                var curDate = new Date(Date.UTC());
 
+                                for (i=0; i<result.length; i++) {
+
+                                    EntityToPublishDate = result[i].EntityToPublishDate; 
+
+                                    if (EntityToPublishDate == curDate) {
+
+                                        EntityId = result[i]._id; 
+
+                                        ReminderText = result[i].ReminderText; 
+
+                                        bot.beginDialog(result[i].AddressData, '/sendReminder', { ReminderText: session.userData.ReminderText });
+
+                                    }
+
+                                }   
+                        
+                                                
+                            } 
+
+                                return;
                             }
 
-                        }   
-                  
-                                        
-                    } 
+                            result.push(doc);
+            });     
 
-                        return;
-                    }
 
-                    result.push(doc);
-    }); 
+    
+});
 
-      
-
-*/
 
 
 
