@@ -85,7 +85,7 @@ schedule.scheduleJob(rule, function(){
 
                             if (result.length>0) {
 
-                                var curDate = new Date(Date.UTC());
+                                var curDate = moment().format(DateFormat); 
                                 var curDateTz = momentimezone.tz(curDate,zone).format();
 
         var LogTimeStame = moment().format(DateFormat); 
