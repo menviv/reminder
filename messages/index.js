@@ -91,7 +91,7 @@ schedule.scheduleJob(rule, function(){
 
                                     EntityToPublishDate = result[i].EntityToPublishDate; 
 
-                                    //curDateTz.diff(EntityToPublishDate, 'minutes') 
+                                    var Delta = moment.duration(moment(EntityToPublishDate).diff(moment(curDateTz)));
 
         var LogTimeStame = moment().format(DateFormat); 
 
@@ -99,7 +99,7 @@ schedule.scheduleJob(rule, function(){
             'CreatedTime': LogTimeStame,
             'curDateTz': curDateTz,
             'EntityToPublishDate': EntityToPublishDate,
-            'Delta': moment.duration(moment(EntityToPublishDate).diff(moment(curDateTz))),
+            'Delta': Delta,
             'dddddddd': 'ffffffff',
             'Origin': 'schedule_Job'
         }; 
