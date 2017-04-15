@@ -98,6 +98,7 @@ schedule.scheduleJob(rule, function(){
             'curDateTz': curDateTz,
             'EntityToPublishDate': EntityToPublishDate,
             'Delta': EntityToPublishDate - curDateTz,
+            'dddddddd': 'ffffffff'
             'Origin': 'schedule_Job'
         }; 
 
