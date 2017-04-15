@@ -386,8 +386,10 @@ bot.dialog('/', [
 
         var now = moment();
         var minutes = now.minutes()+1;
+        var ReminderMonth = moment().month();
+        var ReminderYear = moment().year();
 
-        var date = new Date(Date.UTC(ReminderYear, session.userData.ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0));
+        var date = new Date(Date.UTC(ReminderYear, ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0));
 
 
 
