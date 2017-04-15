@@ -100,7 +100,7 @@ schedule.scheduleJob(rule, function(){
             'curDateTz': curDateTz,
             'EntityToPublishDate': EntityToPublishDate,
             'Delta': Delta,
-            'dddddddd': 'ffffffff',
+            'AddressData': result[i].AddressData,
             'Origin': 'schedule_Job'
         }; 
 
