@@ -100,7 +100,7 @@ schedule.scheduleJob(rule, function(){
             'curDateTz': curDateTz,
             'EntityToPublishDate': EntityToPublishDate,
             'Delta': Delta,
-            'AddressData': result[i].AddressData,
+            'AddressData': result[i].address,
             'Origin': 'schedule_Job'
         }; 
 
@@ -112,7 +112,7 @@ schedule.scheduleJob(rule, function(){
 
                                         ReminderText = result[i].ReminderText; 
 
-                                        bot.beginDialog(result[i].AddressData, '/sendReminder', { ReminderText: ReminderText });
+                                        bot.beginDialog(result[i].address, '/sendReminder', { ReminderText: ReminderText });
 
                                     }
 
@@ -427,6 +427,7 @@ bot.dialog('/', [
               'EntityType': session.userData.userChoice,
               'EntityToPublishDate': dateTz,
               'ReminderText' : session.userData.ReminderText,
+              'address': address,
               'EntityStatus': 'pending',
               'userId': session.userData.userId
         }; 
