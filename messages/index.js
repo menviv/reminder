@@ -76,6 +76,8 @@ schedule.scheduleJob(rule, function(){
 
 
             var cursor = colEntities.find({ 'EntityStatus': 'pending' });
+
+            var curDateTz = momentimezone.tz(moment(),zone).format();
                         
             var result = [];
             cursor.each(function(err, doc) {
@@ -86,7 +88,7 @@ schedule.scheduleJob(rule, function(){
                             if (result.length>0) {
 
                                // var curDate = moment().format(DateFormat); 
-                                var curDateTz = momentimezone.tz(moment(),zone).format();
+                                
 
         var LogTimeStame = moment().format(DateFormat); 
 
