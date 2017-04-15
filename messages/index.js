@@ -91,7 +91,7 @@ schedule.scheduleJob(rule, function(){
 
                                     EntityToPublishDate = result[i].EntityToPublishDate; 
 
-                                    var Delta = EntityToPublishDate.diff(curDateTz);
+                                    var Delta = moment(EntityToPublishDate).diff(curDateTz);
 
         var LogTimeStame = moment().format(DateFormat); 
 
