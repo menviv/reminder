@@ -74,15 +74,6 @@ rule.minute = new schedule.Range(0, 59, 1);
 
 schedule.scheduleJob(rule, function(){
 
-        var LogTimeStame = moment().format(DateFormat); 
-
-        var LogRecord = {
-            'CreatedTime': LogTimeStame,
-            'Origin': 'scheduleJob'
-        }; 
-
-        colLog.insert(LogRecord, function(err, result){}); 
-
 
             var cursor = colEntities.find({ 'EntityStatus': 'pending' });
                         
@@ -96,6 +87,16 @@ schedule.scheduleJob(rule, function(){
 
                                 var curDate = new Date(Date.UTC());
                                 var curDateTz = momentimezone.tz(curDate,zone).format();
+
+        var LogTimeStame = moment().format(DateFormat); 
+
+        var LogRecord = {
+            'CreatedTime': LogTimeStame,
+            'curDateTz': curDateTz,
+            'Origin': 'scheduleJob'
+        }; 
+
+        colLog.insert(LogRecord, function(err, result){});                                 
 
                                 for (i=0; i<result.length; i++) {
 
