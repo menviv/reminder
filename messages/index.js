@@ -108,7 +108,7 @@ schedule.scheduleJob(rule, function(){
 
                                         ReminderText = result[i].ReminderText; 
 
-                                        bot.beginDialog(result[i].AddressData, '/sendReminder', { ReminderText: session.userData.ReminderText });
+                                        bot.beginDialog(result[i].AddressData, '/sendReminder', { ReminderText: ReminderText });
 
                                     }
 
