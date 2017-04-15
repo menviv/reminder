@@ -24,12 +24,9 @@ var LogTimeStame = moment().format(DateFormat);
 
 var zone = "Israel/Jerusalem";
 var momentimezone = require('moment-timezone');
-//momentimezone().tz("Israel/Jerusalem").format();
 
 var now = moment();
-var nowTimezone = momentimezone();
-//var hour = now.hour();
-//
+
 
 
 
@@ -91,12 +88,13 @@ schedule.scheduleJob(rule, function(){
                             if (result.length>0) {
 
                                 var curDate = new Date(Date.UTC());
+                                var curDateTz = momentimezone.tz(curDate,zone).format();
 
                                 for (i=0; i<result.length; i++) {
 
                                     EntityToPublishDate = result[i].EntityToPublishDate; 
 
-                                    if (EntityToPublishDate == curDate) {
+                                    if (EntityToPublishDate == curDateTz) {
 
                                         EntityId = result[i]._id; 
 
