@@ -396,10 +396,7 @@ bot.dialog('/', [
 
         var date = new Date(Date.UTC(ReminderYear, ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0));
 
-        var dateTz = nowTimezone.tz(date,zone).format();
-        
-
-
+        var dateTz = momentimezone.tz(date,zone).format();
 
         var EntityRecord = {
               '_id': o_id,
