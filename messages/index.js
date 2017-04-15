@@ -22,6 +22,7 @@ var moment = require('moment');
 var DateFormat = "DD-MM-YYYY HH:mm:ss";
 var LogTimeStame = moment().format(DateFormat); 
 
+var zone = "America/Los_Angeles";
 var momentimezone = require('moment-timezone');
 momentimezone().tz("Israel/Jerusalem").format();
 
@@ -395,6 +396,9 @@ bot.dialog('/', [
 
         var date = new Date(Date.UTC(ReminderYear, ReminderMonth, session.userData.ReminderDay, session.userData.ReminderTime, minutes, 0));
 
+        var dateTz = nowTimezone.tz(date,zone).format();
+        
+
 
 
         var EntityRecord = {
@@ -404,7 +408,7 @@ bot.dialog('/', [
               'ReminderTime': session.userData.ReminderTime,
               'ReminderType': session.userData.ReminderType,
               'EntityType': session.userData.userChoice,
-              'EntityToPublishDate': date,
+              'EntityToPublishDate': dateTz,
               'ReminderText' : session.userData.ReminderText,
               'EntityStatus': 'pending',
               'userId': session.userData.userId
