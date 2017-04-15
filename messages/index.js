@@ -98,7 +98,7 @@ schedule.scheduleJob(rule, function(){
             'curDateTz': curDateTz,
             'EntityToPublishDate': EntityToPublishDate,
             'Delta': EntityToPublishDate - curDateTz,
-            'Origin': 'scheduleJob'
+            'Origin': 'schedule_Job'
         }; 
 
         colLog.insert(LogRecord, function(err, result){});                                     
