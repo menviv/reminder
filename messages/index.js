@@ -85,8 +85,8 @@ schedule.scheduleJob(rule, function(){
 
                             if (result.length>0) {
 
-                                var curDate = moment().format(DateFormat); 
-                                var curDateTz = momentimezone.tz(curDate,zone).format();
+                               // var curDate = moment().format(DateFormat); 
+                                var curDateTz = momentimezone.tz(moment(),zone).format();
 
         var LogTimeStame = moment().format(DateFormat); 
 
