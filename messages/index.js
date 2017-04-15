@@ -22,7 +22,11 @@ var moment = require('moment');
 var DateFormat = "DD-MM-YYYY HH:mm:ss";
 var LogTimeStame = moment().format(DateFormat); 
 
+var momentimezone = require('moment-timezone');
+momentimezone().tz("Israel/Jerusalem").format();
+
 var now = moment();
+var nowTimezone = momentimezone();
 //var hour = now.hour();
 //
 
@@ -634,7 +638,7 @@ bot.dialog('/sendReminder', [
 
 bot.dialog('killDialog', function (session, args) {
 
-    session.send(moment().format(DateFormat));
+    session.send(nowTimezone);
 
     session.endDialog();
 
