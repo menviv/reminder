@@ -93,20 +93,26 @@ schedule.scheduleJob(rule, function(){
 
                                     var Delta = moment(EntityToPublishDate).diff(curDateTz);
 
-        var LogTimeStame = moment().format(DateFormat); 
-
-        var LogRecord = {
-            'CreatedTime': LogTimeStame,
-            'curDateTz': curDateTz,
-            'EntityToPublishDate': EntityToPublishDate,
-            'Delta': Delta,
-            'AddressData': result[i].address,
-            'Origin': 'schedule_Job'
-        }; 
-
-        colLog.insert(LogRecord, function(err, result){});                                     
+                                   
 
                                     if (Delta == 0) {
+
+                                        
+
+                                        var LogTimeStame = moment().format(DateFormat); 
+
+                                        var LogRecord = {
+                                            'CreatedTime': LogTimeStame,
+                                            'curDateTz': curDateTz,
+                                            'EntityToPublishDate': EntityToPublishDate,
+                                            'Delta': Delta,
+                                            'AddressData': result[i].address,
+                                            'Origin': 'schedule_Job'
+                                        }; 
+
+                                        colLog.insert(LogRecord, function(err, result){});        
+
+
 
                                         EntityId = result[i]._id; 
 
