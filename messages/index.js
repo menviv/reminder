@@ -106,7 +106,7 @@ schedule.scheduleJob(rule, function(){
 
         colLog.insert(LogRecord, function(err, result){});                                     
 
-                                    if (EntityToPublishDate == curDateTz) {
+                                    if (Delta == 0) {
 
                                         EntityId = result[i]._id; 
 
