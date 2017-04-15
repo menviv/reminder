@@ -638,7 +638,7 @@ bot.dialog('/sendReminder', [
 
 bot.dialog('killDialog', function (session, args) {
 
-    session.send(nowTimezone);
+    session.send("nowTimezone: " +nowTimezone);
 
     session.endDialog();
 
