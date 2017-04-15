@@ -87,22 +87,20 @@ schedule.scheduleJob(rule, function(){
 
                             if (result.length>0) {
 
-                               // var curDate = moment().format(DateFormat); 
-                                
+                                for (i=0; i<result.length; i++) {
+
+                                    EntityToPublishDate = result[i].EntityToPublishDate; 
 
         var LogTimeStame = moment().format(DateFormat); 
 
         var LogRecord = {
             'CreatedTime': LogTimeStame,
             'curDateTz': curDateTz,
+            'EntityToPublishDate': EntityToPublishDate,
             'Origin': 'scheduleJob'
         }; 
 
-        colLog.insert(LogRecord, function(err, result){});                                 
-
-                                for (i=0; i<result.length; i++) {
-
-                                    EntityToPublishDate = result[i].EntityToPublishDate; 
+        colLog.insert(LogRecord, function(err, result){});                                     
 
                                     if (EntityToPublishDate == curDateTz) {
 
