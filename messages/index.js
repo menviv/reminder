@@ -22,9 +22,9 @@ var moment = require('moment');
 var DateFormat = "DD-MM-YYYY HH:mm:ss";
 var LogTimeStame = moment().format(DateFormat); 
 
-var zone = "America/Los_Angeles";
+var zone = "Israel/Jerusalem";
 var momentimezone = require('moment-timezone');
-momentimezone().tz("Israel/Jerusalem").format();
+//momentimezone().tz("Israel/Jerusalem").format();
 
 var now = moment();
 var nowTimezone = momentimezone();
